@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* All previous CSS from home.html remains the same until the content section */
         :root {
             /* Light Theme Colors */
             --light-bg: #f8f9fa;
@@ -69,8 +68,9 @@
             padding: 0;
             background-color: var(--light-bg);
             color: var(--light-text);
-            transition: background-color var(--transition-slow), color var(--transition-slow);
+            transition: all var(--transition-slow);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         body[data-theme="dark"] {
@@ -164,7 +164,7 @@
         .sidebar__logo {
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--color-primary);
+            color: white;
             margin: 0;
             transition: all var(--transition-normal);
             display: inline-block;
@@ -176,6 +176,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
 
         .sidebar__logo::before {
@@ -191,6 +192,7 @@
                 rgba(255, 255, 255, 0) 100%);
             transform: rotate(30deg);
             animation: shine 3s infinite;
+            z-index: -1;
         }
 
         @keyframes shine {
@@ -240,10 +242,20 @@
             width: 24px;
             margin-right: var(--spacing-sm);
             text-align: center;
+            transition: transform var(--transition-fast);
+        }
+
+        .sidebar__link:hover .sidebar__icon {
+            transform: scale(1.1);
         }
 
         .sidebar__text {
             font-weight: 500;
+            transition: transform var(--transition-fast);
+        }
+
+        .sidebar__link:hover .sidebar__text {
+            transform: translateX(5px);
         }
 
         .sidebar__footer {
@@ -296,6 +308,11 @@
             color: #9e9e9e;
         }
 
+        .theme-switcher__btn.active {
+            background-color: rgba(58, 134, 255, 0.2);
+            transform: scale(1.05);
+        }
+
         /* Color Palette */
         .color-palette {
             display: flex;
@@ -309,7 +326,7 @@
             border-radius: var(--radius-circle);
             border: 2px solid transparent;
             cursor: pointer;
-            transition: transform var(--transition-fast);
+            transition: all var(--transition-fast);
         }
 
         .color-palette__swatch:hover {
@@ -340,14 +357,47 @@
             background-color: var(--color-primary-cyan);
         }
 
+        .color-palette__swatch.active {
+            border-color: var(--light-text);
+            transform: scale(1.1);
+        }
+
+        body[data-theme="dark"] .color-palette__swatch.active {
+            border-color: var(--dark-text);
+        }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: var(--spacing-xl);
+            margin-left: 280px;
+            transition: all var(--transition-normal);
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .content__inner {
+            max-width: 1000px;
+            margin: 0;
+            width: 100%;
+            transition: all var(--transition-normal);
+        }
+
         /* Tech Stack Specific Styles */
         .tech-stack {
             padding: var(--spacing-xl) 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--spacing-xl);
+            width: 100%;
         }
 
         .section-header {
             margin-bottom: var(--spacing-lg);
             position: relative;
+            width: 100%;
+            text-align: left;
         }
 
         .section-title {
@@ -356,6 +406,11 @@
             position: relative;
             display: inline-block;
             font-weight: 700;
+            transition: all var(--transition-fast);
+        }
+
+        .section-title:hover {
+            transform: translateX(5px);
         }
 
         .section-title::after {
@@ -365,8 +420,14 @@
             bottom: -5px;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, var(--color-primary-red), var(--color-primary-red));
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary));
             border-radius: 3px;
+            transition: all var(--transition-fast);
+        }
+
+        .section-title:hover::after {
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-purple));
         }
 
         .section-title::before {
@@ -376,16 +437,22 @@
             bottom: -10px;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, var(--color-primary-red), var(--color-primary-red));
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary));
             border-radius: 3px;
             opacity: 0.5;
+            transition: all var(--transition-fast);
+        }
+
+        .section-title:hover::before {
+            height: 4px;
+            opacity: 0.7;
         }
 
         .tech-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
-            margin-top: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+            width: 100%;
         }
 
         .tech-category {
@@ -393,7 +460,8 @@
             border-radius: var(--radius-md);
             padding: var(--spacing-lg);
             box-shadow: var(--shadow-sm);
-            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+            transition: all var(--transition-normal);
+            width: 100%;
         }
 
         body[data-theme="dark"] .tech-category {
@@ -407,7 +475,7 @@
 
         .tech-items {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: var(--spacing-md);
             list-style: none;
             padding: 0;
@@ -421,10 +489,17 @@
             padding: var(--spacing-sm);
             border-radius: var(--radius-md);
             transition: all var(--transition-fast);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .tech-item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .tech-item:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-5px);
             background-color: rgba(58, 134, 255, 0.1);
         }
 
@@ -444,6 +519,19 @@
             font-size: 1.8rem;
             color: var(--color-primary);
             box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: all var(--transition-fast);
+        }
+
+        .tech-icon-container img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            transition: transform var(--transition-fast);
+        }
+
+        .tech-item:hover .tech-icon-container img {
+            transform: scale(1.1);
         }
 
         body[data-theme="dark"] .tech-icon-container {
@@ -454,6 +542,7 @@
             font-size: 0.85rem;
             text-align: center;
             font-weight: 500;
+            display: none;
         }
 
         /* Tooltip */
@@ -475,7 +564,7 @@
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
-            transition: opacity var(--transition-fast);
+            transition: all var(--transition-fast);
             z-index: 10;
         }
 
@@ -486,18 +575,60 @@
 
         .tech-item:hover::after {
             opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        /* Chat Button */
+        .chat-btn {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-fast);
+        }
+
+        .chat-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chat-btn__icon {
+            font-size: 1.2rem;
+        }
+
+        .chat-btn__text {
+            font-weight: 500;
         }
 
         /* Responsive Adjustments */
         @media (max-width: 768px) {
+            .content {
+                padding: var(--spacing-md);
+                margin-left: 0;
+            }
+
             .tech-items {
-                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             }
 
             .tech-icon-container {
                 width: 50px;
                 height: 50px;
-                font-size: 1.5rem;
+            }
+
+            .tech-icon-container img {
+                width: 30px;
+                height: 30px;
             }
         }
     </style>
@@ -546,19 +677,19 @@
                         </a>
                     </li>
                     <li class="sidebar__item">
-                        <a href="#certificates" class="sidebar__link">
+                        <a href="{% url 'certificates' %}" class="sidebar__link">
                             <i class="fas fa-certificate sidebar__icon"></i>
                             <span class="sidebar__text">Certificates</span>
                         </a>
                     </li>
                     <li class="sidebar__item">
-                        <a href="#blog" class="sidebar__link">
+                        <a href="{% url 'blog'%}" class="sidebar__link">
                             <i class="fas fa-blog sidebar__icon"></i>
                             <span class="sidebar__text">Blogs & Notions</span>
                         </a>
                     </li>
                     <li class="sidebar__item">
-                        <a href="#contact" class="sidebar__link">
+                        <a href="{% url 'contact' %}" class="sidebar__link">
                             <i class="fas fa-envelope sidebar__icon"></i>
                             <span class="sidebar__text">Contacts</span>
                         </a>
@@ -588,157 +719,47 @@
         <!-- Main Content -->
         <main class="content" id="mainContent">
             <div class="content__inner">
-                <!-- Background Design Elements -->
-                <div class="bg-design">
-                    <div class="bg-circle"></div>
-                    <div class="bg-circle"></div>
-                    <div class="bg-circle"></div>
-                </div>
-                
                 <!-- Tech Stack Section -->
                 <section class="tech-stack">
                     <!-- Programming Languages -->
                     <div class="tech-category">
                         <h2 class="section-title">Programming Languages</h2>
                         <ul class="tech-items">
-                            <li class="tech-item" data-tooltip="C">
+                            <li class="tech-item" data-tooltip="PHP">
                                 <div class="tech-icon-container">
-                                    <i class="fas fa-code"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP">
                                 </div>
-                                <span class="tech-name">C</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="C++">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-code"></i>
-                                </div>
-                                <span class="tech-name">C++</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Java">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-java"></i>
-                                </div>
-                                <span class="tech-name">Java</span>
                             </li>
                             <li class="tech-item" data-tooltip="Python">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-python"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
                                 </div>
-                                <span class="tech-name">Python</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Linux">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-linux"></i>
-                                </div>
-                                <span class="tech-name">Linux</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Go">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-golang"></i>
-                                </div>
-                                <span class="tech-name">Go</span>
-                            </li>
                         </ul>
                     </div>
 
-                    <!-- Cloud & DevOps Stack -->
+                    <!-- AI Tools -->
                     <div class="tech-category">
-                        <h2 class="section-title">Cloud & DevOps Stack</h2>
+                        <h2 class="section-title">AI Tools</h2>
                         <ul class="tech-items">
-                            <li class="tech-item" data-tooltip="Python">
+                            <li class="tech-item" data-tooltip="ChatGPT">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-python"></i>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
                                 </div>
-                                <span class="tech-name">Python</span>
                             </li>
-                            <li class="tech-item" data-tooltip="Linux">
+                            <li class="tech-item" data-tooltip="AI Web Dev Tools">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-linux"></i>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/2821/2821637.png" alt="AI Web Dev">
                                 </div>
-                                <span class="tech-name">Linux</span>
                             </li>
-                            <li class="tech-item" data-tooltip="Go">
+                            <li class="tech-item" data-tooltip="Midjourney">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-golang"></i>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968527.png" alt="Midjourney">
                                 </div>
-                                <span class="tech-name">Go</span>
                             </li>
-                            <li class="tech-item" data-tooltip="Bash">
+                            <li class="tech-item" data-tooltip="GitHub Copilot">
                                 <div class="tech-icon-container">
-                                    <i class="fas fa-terminal"></i>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/5969/5969610.png" alt="GitHub Copilot">
                                 </div>
-                                <span class="tech-name">Bash</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="AWS">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">AWS</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Docker">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-docker"></i>
-                                </div>
-                                <span class="tech-name">Docker</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Azure DevOps">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-microsoft"></i>
-                                </div>
-                                <span class="tech-name">Azure DevOps</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Jenkins">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-jenkins"></i>
-                                </div>
-                                <span class="tech-name">Jenkins</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Ansible">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <span class="tech-name">Ansible</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Kubernetes">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-ship"></i>
-                                </div>
-                                <span class="tech-name">Kubernetes</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Terraform">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-server"></i>
-                                </div>
-                                <span class="tech-name">Terraform</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Grafana">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <span class="tech-name">Grafana</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Prometheus">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-database"></i>
-                                </div>
-                                <span class="tech-name">Prometheus</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Maven">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-cogs"></i>
-                                </div>
-                                <span class="tech-name">Maven</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="DataDog">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-dog"></i>
-                                </div>
-                                <span class="tech-name">DataDog</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Kubecost">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-dollar-sign"></i>
-                                </div>
-                                <span class="tech-name">Kubecost</span>
                             </li>
                         </ul>
                     </div>
@@ -747,174 +768,25 @@
                     <div class="tech-category">
                         <h2 class="section-title">Databases</h2>
                         <ul class="tech-items">
-                            <li class="tech-item" data-tooltip="MySQL">
+                            <li class="tech-item" data-tooltip="SQL">
                                 <div class="tech-icon-container">
-                                    <i class="fas fa-database"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL">
                                 </div>
-                                <span class="tech-name">MySQL</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="PgAdmin">
+                                <div class="tech-icon-container">
+                                    <img src="https://www.pgadmin.org/img/pgadmin4.png" alt="PgAdmin">
+                                </div>
                             </li>
                             <li class="tech-item" data-tooltip="PostgreSQL">
                                 <div class="tech-icon-container">
-                                    <i class="fas fa-database"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL">
                                 </div>
-                                <span class="tech-name">PostgreSQL</span>
                             </li>
-                            <li class="tech-item" data-tooltip="DynamoDB">
+                            <li class="tech-item" data-tooltip="MongoDB">
                                 <div class="tech-icon-container">
-                                    <i class="fas fa-bolt"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB">
                                 </div>
-                                <span class="tech-name">DynamoDB</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Neo4j">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-project-diagram"></i>
-                                </div>
-                                <span class="tech-name">Neo4j</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Apache Cassandra">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-database"></i>
-                                </div>
-                                <span class="tech-name">Cassandra</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="MonetDB">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-database"></i>
-                                </div>
-                                <span class="tech-name">MonetDB</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- AWS Services -->
-                    <div class="tech-category">
-                        <h2 class="section-title">AWS Services</h2>
-                        <ul class="tech-items">
-                            <li class="tech-item" data-tooltip="EC2">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">EC2</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="VPC">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">VPC</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Lambda">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">Lambda</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="DynamoDB">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">DynamoDB</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="RDS">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">RDS</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="SageMaker">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">SageMaker</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="CloudFront">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">CloudFront</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="S3">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">S3</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Route53">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">Route53</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="CloudWatch">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">CloudWatch</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="ECS">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">ECS</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="EBS">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">EBS</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="SNS">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">SNS</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="IAM">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">IAM</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="CodeCommit">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">CodeCommit</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="CodePipeline">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">CodePipeline</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="CodeBuild">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">CodeBuild</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="CodeDeploy">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">CodeDeploy</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="CloudFormation">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">CloudFormation</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Elastic Beanstalk">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">Elastic Beanstalk</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Amplify">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-aws"></i>
-                                </div>
-                                <span class="tech-name">Amplify</span>
                             </li>
                         </ul>
                     </div>
@@ -923,97 +795,63 @@
                     <div class="tech-category">
                         <h2 class="section-title">Version Control</h2>
                         <ul class="tech-items">
-                            <li class="tech-item" data-tooltip="Git">
-                                <div class="tech-icon-container">
-                                    <i class="fab fa-git-alt"></i>
-                                </div>
-                                <span class="tech-name">Git</span>
-                            </li>
                             <li class="tech-item" data-tooltip="GitHub">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-github"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
                                 </div>
-                                <span class="tech-name">GitHub</span>
                             </li>
                         </ul>
                     </div>
-
-                    <!-- Web/App Development -->
+                     <!-- Web/App Development -->
                     <div class="tech-category">
                         <h2 class="section-title">Web/App Development</h2>
                         <ul class="tech-items">
                             <li class="tech-item" data-tooltip="HTML5">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-html5"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
                                 </div>
-                                <span class="tech-name">HTML5</span>
                             </li>
                             <li class="tech-item" data-tooltip="CSS3">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-css3-alt"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
                                 </div>
-                                <span class="tech-name">CSS3</span>
                             </li>
                             <li class="tech-item" data-tooltip="JavaScript">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-js"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
                                 </div>
-                                <span class="tech-name">JavaScript</span>
                             </li>
                             <li class="tech-item" data-tooltip="PHP">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-php"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP">
                                 </div>
-                                <span class="tech-name">PHP</span>
                             </li>
                             <li class="tech-item" data-tooltip="Android">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-android"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android">
                                 </div>
-                                <span class="tech-name">Android</span>
                             </li>
                             <li class="tech-item" data-tooltip="Bootstrap">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-bootstrap"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap">
                                 </div>
-                                <span class="tech-name">Bootstrap</span>
                             </li>
                             <li class="tech-item" data-tooltip="Firebase">
                                 <div class="tech-icon-container">
-                                    <i class="fas fa-fire"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase">
                                 </div>
-                                <span class="tech-name">Firebase</span>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- Designing -->
+                    <!-- Design -->
                     <div class="tech-category">
-                        <h2 class="section-title">Designing</h2>
+                        <h2 class="section-title">Design</h2>
                         <ul class="tech-items">
                             <li class="tech-item" data-tooltip="Figma">
                                 <div class="tech-icon-container">
-                                    <i class="fab fa-figma"></i>
+                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma">
                                 </div>
-                                <span class="tech-name">Figma</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Photoshop">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-palette"></i>
-                                </div>
-                                <span class="tech-name">Photoshop</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="After Effects">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-film"></i>
-                                </div>
-                                <span class="tech-name">After Effects</span>
-                            </li>
-                            <li class="tech-item" data-tooltip="Lightroom">
-                                <div class="tech-icon-container">
-                                    <i class="fas fa-camera"></i>
-                                </div>
-                                <span class="tech-name">Lightroom</span>
                             </li>
                         </ul>
                     </div>
@@ -1054,10 +892,18 @@
             }
 
             // Highlight active theme button
-            document.querySelector(`.theme-switcher__btn[data-theme="${savedTheme}"]`).classList.add('active');
+            themeButtons.forEach(btn => {
+                if (btn.getAttribute('data-theme') === savedTheme) {
+                    btn.classList.add('active');
+                }
+            });
 
             // Highlight active color swatch
-            document.querySelector(`.color-palette__swatch[data-color="${savedColor}"]`).classList.add('active');
+            colorSwatches.forEach(swatch => {
+                if (swatch.getAttribute('data-color') === savedColor) {
+                    swatch.classList.add('active');
+                }
+            });
 
             // Sidebar toggle functionality
             sidebarToggle.addEventListener('click', function() {
@@ -1135,16 +981,13 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.classList.add('visible');
                     }
                 });
             }, { threshold: 0.1 });
 
             techItems.forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                item.style.transition = 'all 0.5s ease';
                 observer.observe(item);
             });
         });

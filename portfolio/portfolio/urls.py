@@ -17,11 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main import views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),  # This connects the root URL to the home view
-    path('about/', views.about, name='about'),  # This connects the about URL to the about view
-    path('tech/', views.tech, name='tech'),  # This connects the tech URL to the tech view
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+    path('tech/', views.tech, name='tech'),
+    path('contact/', views.contact_view, name='contact'),  # ✅ fixed here
+    path('certificates/', views.certificates, name='certificates'),
+    path('blog/', views.blog, name='blog'),
 ]
-

@@ -163,7 +163,7 @@
         .sidebar__logo {
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--color-primary);
+            color: white;
             margin: 0;
             transition: all var(--transition-normal);
             display: inline-block;
@@ -772,19 +772,19 @@
                         </a>
                     </li>
                     <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
+                        <a href="{% url 'certificates' %}" class="sidebar__link">
                             <i class="fas fa-certificate sidebar__icon"></i>
                             <span class="sidebar__text">Certificates</span>
                         </a>
                     </li>
                     <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
+                        <a href="{% url 'blog'%}" class="sidebar__link">
                             <i class="fas fa-blog sidebar__icon"></i>
                             <span class="sidebar__text">Blogs & Notions</span>
                         </a>
                     </li>
                     <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
+                        <a href="{% url 'contact' %}" class="sidebar__link">
                             <i class="fas fa-envelope sidebar__icon"></i>
                             <span class="sidebar__text">Contacts</span>
                         </a>
