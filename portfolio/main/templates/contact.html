@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" data-theme="light" data-color="red">
@@ -164,7 +163,7 @@
         .sidebar__logo {
             font-size: 2.5rem;
             font-weight: 700;
-            color: white; /* Fixed color for visibility */
+            color: white;
             margin: 0;
             transition: all var(--transition-normal);
             display: inline-block;
@@ -340,109 +339,122 @@
             background-color: var(--color-primary-cyan);
         }
 
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: var(--spacing-xl);
+            transition: all var(--transition-normal);
+        }
+
         /* Contact Section Styles */
         .contact-container {
-    display: flex;
-    gap: 3rem;
-    margin: 2rem auto;
-    max-width: 1200px;
-    padding: 2rem;
-    width: 100%;
-    min-height: calc(100vh - 4rem); /* Subtract the rgb strip height */
-    align-items: center; /* Vertically center the content */
-    justify-content: center; /* Horizontally center the content */
-}.contact-left, .contact-right {
-    flex: 1;
-    min-width: 300px;
-    max-width: 500px;
-    padding: 2rem;
-    background-color: var(--light-card-bg);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-}
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+            background-color: var(--light-card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
 
-body[data-theme="dark"] .contact-left,
-body[data-theme="dark"] .contact-right {
-    background-color: var(--dark-card-bg);
-}
+        body[data-theme="dark"] .contact-container {
+            background-color: var(--dark-card-bg);
+        }
 
         .contact-title {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-            color: var(--light-text);
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-primary);
             font-weight: 700;
-        }
-
-        body[data-theme="dark"] .contact-title {
-            color: var(--dark-text);
-        }
-
-        .contact-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: var(--color-primary-red);
-            border-radius: 2px;
+            text-align: center;
         }
 
         .contact-subtitle {
             font-size: 1.2rem;
-            color: var(--color-primary-red);
-            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
             font-weight: 600;
+            text-align: center;
         }
 
         .platform-text {
             color: var(--light-text);
-            margin-bottom: 2rem;
+            margin-bottom: var(--spacing-lg);
             font-size: 1rem;
             line-height: 1.6;
+            text-align: center;
         }
 
         body[data-theme="dark"] .platform-text {
             color: var(--dark-text);
         }
 
+        .section-divider {
+            height: 1px;
+            background-color: var(--light-border);
+            margin: var(--spacing-xl) 0;
+            opacity: 0.5;
+        }
+
+        body[data-theme="dark"] .section-divider {
+            background-color: var(--dark-border);
+        }
+
+        .social-section, .email-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-primary);
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--light-text);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        body[data-theme="dark"] .section-subtitle {
+            color: var(--dark-text);
+        }
+
         .social-links {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
         }
 
         .social-link {
             display: flex;
             align-items: center;
-            padding: 1rem;
-            border-radius: var(--radius-md);
-            background-color: var(--light-card-bg);
+            justify-content: center;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            background-color: rgba(0, 0, 0, 0.05);
             color: var(--light-text);
             text-decoration: none;
             transition: all var(--transition-fast);
-            box-shadow: var(--shadow-sm);
         }
 
         body[data-theme="dark"] .social-link {
-            background-color: var(--dark-card-bg);
+            background-color: rgba(255, 255, 255, 0.05);
             color: var(--dark-text);
         }
 
         .social-link:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-            background-color: var(--color-primary-red);
+            background-color: var(--color-primary);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
 
         .social-icon {
-            width: 24px;
-            margin-right: 1rem;
-            text-align: center;
+            margin-right: var(--spacing-sm);
             font-size: 1.1rem;
         }
 
@@ -451,68 +463,27 @@ body[data-theme="dark"] .contact-right {
             font-size: 1rem;
         }
 
-        .divider {
-            height: 1px;
-            background-color: var(--light-border);
-            margin: 1.5rem 0;
-            opacity: 0.5;
-        }
-
-        body[data-theme="dark"] .divider {
-            background-color: var(--dark-border);
-        }
-
-        .email-form {
-    background-color: transparent;
-    padding: 0;
-    box-shadow: none;
-}
-
-        body[data-theme="dark"] .email-form {
-            background-color: var(--dark-card-bg);
-        }
-
-        .form-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--color-primary-red);
-            font-weight: 700;
-        }
-
-        .form-subtitle {
-            color: var(--light-text);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        body[data-theme="dark"] .form-subtitle {
-            color: var(--dark-text);
-        }
-
         .form-row {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-row .form-group {
-            flex: 1;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            flex: 1;
+            margin-bottom: var(--spacing-md);
         }
 
         .form-label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: var(--spacing-xs);
             font-weight: 500;
             font-size: 0.95rem;
         }
 
         .form-input {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: var(--spacing-sm);
             border: 1px solid var(--light-border);
             border-radius: var(--radius-sm);
             font-family: 'Inter', sans-serif;
@@ -530,7 +501,7 @@ body[data-theme="dark"] .contact-right {
 
         .form-input:focus {
             outline: none;
-            border-color: var(--color-primary-red);
+            border-color: var(--color-primary);
             box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.2);
         }
 
@@ -540,10 +511,10 @@ body[data-theme="dark"] .contact-right {
         }
 
         .submit-btn {
-            background-color: var(--color-primary-red);
+            background-color: var(--color-primary);
             color: white;
             border: none;
-            padding: 0.8rem 1.5rem;
+            padding: var(--spacing-sm) var(--spacing-md);
             border-radius: var(--radius-sm);
             font-weight: 600;
             cursor: pointer;
@@ -561,7 +532,7 @@ body[data-theme="dark"] .contact-right {
 
         .success-message {
             color: #06d6a0;
-            margin-top: 1rem;
+            margin-top: var(--spacing-md);
             text-align: center;
             font-weight: 500;
             font-size: 0.95rem;
@@ -599,20 +570,14 @@ body[data-theme="dark"] .contact-right {
             font-weight: 500;
         }
 
-       @media (max-width: 768px) {
-    .contact-container {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 1rem;
-        min-height: auto;
-    }
-    
-    .contact-left, .contact-right {
-        width: 100%;
-        max-width: 100%;
-        padding: 1.5rem;
-    }
-}
+        @media (max-width: 768px) {
+            .content {
+                padding: var(--spacing-md);
+            }
+            
+            .contact-container {
+                padding: var(--spacing-md);
+            }
             
             .form-row {
                 flex-direction: column;
@@ -718,70 +683,68 @@ body[data-theme="dark"] .contact-right {
 
         <!-- Main Content -->
         <main class="content" id="mainContent">
-            <div class="content__inner">
-                <div class="contact-container">
-                    <div class="contact-left">
-                        <h1 class="contact-title">Contact Me</h1>
-                        <p class="contact-subtitle">Let's Get Connected...</p>
-                        <p class="platform-text">Choose any of your Favourite Platform</p>
-                        
-                        <div class="social-links">
-                            <a href="#" class="social-link">
-                                <i class="fab fa-twitter social-icon"></i>
-                                <span class="social-text">Twitter</span>
-                            </a>
-                            <a href="#" class="social-link">
-                                <i class="fab fa-linkedin-in social-icon"></i>
-                                <span class="social-text">LinkedIn</span>
-                            </a>
-                            <a href="#" class="social-link">
-                                <i class="fab fa-github social-icon"></i>
-                                <span class="social-text">GitHub</span>
-                            </a>
-                            <a href="#" class="social-link">
-                                <i class="fas fa-code social-icon"></i>
-                                <span class="social-text">Coding Portfolio</span>
-                            </a>
-                            <a href="#" class="social-link">
-                                <i class="fas fa-calendar-alt social-icon"></i>
-                                <span class="social-text">Book A Meet</span>
-                            </a>
-                        </div>
+            <div class="contact-container">
+                <h1 class="contact-title">Contact Me</h1>
+                <p class="contact-subtitle">Let's Get Connected...</p>
+                <p class="platform-text">Choose any of your Favourite Platform</p>
+                
+                <!-- Social Links Section -->
+                <div class="social-section">
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter social-icon"></i>
+                            <span class="social-text">Twitter</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in social-icon"></i>
+                            <span class="social-text">LinkedIn</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github social-icon"></i>
+                            <span class="social-text">GitHub</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fas fa-code social-icon"></i>
+                            <span class="social-text">Coding Portfolio</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fas fa-calendar-alt social-icon"></i>
+                            <span class="social-text">Book A Meet</span>
+                        </a>
                     </div>
+                </div>
+                
+                <div class="section-divider"></div>
+                
+                <!-- Email Form Section -->
+                <div class="email-section">
+                    <h3 class="section-title">SEND ME AN EMAIL</h3>
+                    <p class="section-subtitle">Will Collaborate Soon</p>
                     
-                    <div class="contact-right">
-                        <div class="email-form">
-                            <h3 class="form-title">SEND ME AN EMAIL</h3>
-                            <p class="form-subtitle">Will Collaborate Soon</p>
-                            
-                            <div class="divider"></div>
-                            
-                            <form method="POST" action="">
-                                {% csrf_token %}
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="id_name" class="form-label">Name</label>
-                                        <input type="text" id="id_name" name="name" class="form-input" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="id_email" class="form-label">Email</label>
-                                        <input type="email" id="id_email" name="email" class="form-input" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="id_message" class="form-label">Share your Subject and Message Here :)</label>
-                                    <textarea id="id_message" name="message" class="form-input" required placeholder="Share your Subject and Message Here :)"></textarea>
-                                </div>
-                                
-                                <button type="submit" class="submit-btn">Send Message</button>
-                            </form>
-
-                            {% if success %}
-                                <p class="success-message">Message sent successfully!</p>
-                            {% endif %}
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_name" class="form-label">Name</label>
+                                <input type="text" id="id_name" name="name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_email" class="form-label">Email</label>
+                                <input type="email" id="id_email" name="email" class="form-input" required>
+                            </div>
                         </div>
-                    </div>
+                        
+                        <div class="form-group">
+                            <label for="id_message" class="form-label">Share your Subject and Message Here :)</label>
+                            <textarea id="id_message" name="message" class="form-input" required placeholder="Share your Subject and Message Here :)"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+
+                    {% if success %}
+                        <p class="success-message">Message sent successfully!</p>
+                    {% endif %}
                 </div>
             </div>
         </main>
@@ -904,12 +867,12 @@ body[data-theme="dark"] .contact-right {
             }
             
             // Form submission
-            const contactForm = document.querySelector('.email-form form');
-             if (contactForm) {
-            contactForm.addEventListener('submit', function() {
-                // Optional success message, but let Django handle the POST
-                console.log("Form submitted to backend.");
-            });
+            const contactForm = document.querySelector('.email-section form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function() {
+                    // Optional success message, but let Django handle the POST
+                    console.log("Form submitted to backend.");
+                });
             }
         });
     </script>
