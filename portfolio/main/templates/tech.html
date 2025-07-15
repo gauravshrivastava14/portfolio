@@ -1,0 +1,1153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-color="blue">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaurav Shrivastava | Tech Stack</title>
+    <link rel="icon" type="image/png" href="{% static 'images/g-s-letter-logo-design-with-swoosh-design-concept-free-vector.jpg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* All previous CSS from home.html remains the same until the content section */
+        :root {
+            /* Light Theme Colors */
+            --light-bg: #f8f9fa;
+            --light-text: #333333;
+            --light-sidebar-bg: #ffffff;
+            --light-card-bg: #ffffff;
+            --light-border: #e0e0e0;
+
+            /* Dark Theme Colors */
+            --dark-bg: #121212;
+            --dark-text: #f0f0f0;
+            --dark-sidebar-bg: #1e1e1e;
+            --dark-card-bg: #252525;
+            --dark-border: #333333;
+
+            /* Theme Colors */
+            --color-primary: #3a86ff; /* Blue */
+            --color-primary-red: #ff4d4d;
+            --color-primary-orange: #ff8c42;
+            --color-primary-blue: #3a86ff;
+            --color-primary-green: #06d6a0;
+            --color-primary-purple: #8338ec;
+            --color-primary-cyan: #00b4d8;
+
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-circle: 50%;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+
+            /* RGB Strip */
+            --rgb-strip-height: 4px;
+            --rgb-animation-duration: 15s;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            overflow-x: hidden;
+        }
+
+        body[data-theme="dark"] {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        /* RGB Strip Animation */
+        .rgb-strip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--rgb-strip-height);
+            background: linear-gradient(90deg, 
+                var(--color-primary-red), 
+                var(--color-primary-orange), 
+                var(--color-primary-blue), 
+                var(--color-primary-green), 
+                var(--color-primary-purple), 
+                var(--color-primary-cyan), 
+                var(--color-primary-red));
+            background-size: 400% 400%;
+            animation: rgbAnimation var(--rgb-animation-duration) linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes rgbAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            transition: margin-left var(--transition-normal);
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            position: fixed;
+            top: var(--spacing-md);
+            left: var(--spacing-md);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-circle);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-fast);
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--light-sidebar-bg);
+            border-right: 1px solid var(--light-border);
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+            position: relative;
+            z-index: 1000;
+        }
+
+        body[data-theme="dark"] .sidebar {
+            background-color: var(--dark-sidebar-bg);
+            border-right-color: var(--dark-border);
+        }
+
+        .sidebar--collapsed {
+            margin-left: -280px;
+        }
+
+        .sidebar__header {
+            padding: var(--spacing-lg);
+            text-align: center;
+            position: relative;
+        }
+
+        .sidebar__logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0;
+            transition: all var(--transition-normal);
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: var(--radius-circle);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-purple));
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar__logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+
+        .sidebar__nav {
+            flex: 1;
+            padding: var(--spacing-md) 0;
+        }
+
+        .sidebar__menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar__item {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .sidebar__link {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            color: inherit;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .sidebar__link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body[data-theme="dark"] .sidebar__link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar__item--active .sidebar__link {
+            background-color: rgba(58, 134, 255, 0.1);
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .sidebar__icon {
+            width: 24px;
+            margin-right: var(--spacing-sm);
+            text-align: center;
+        }
+
+        .sidebar__text {
+            font-weight: 500;
+        }
+
+        .sidebar__footer {
+            padding: var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xs);
+        }
+
+        body[data-theme="dark"] .theme-switcher {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-switcher__btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--light-text);
+            transition: all var(--transition-fast);
+        }
+
+        body[data-theme="dark"] .theme-switcher__btn {
+            color: var(--dark-text);
+        }
+
+        .theme-switcher__btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="dark"] .theme-switcher__btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-switcher__btn[data-theme="light"] {
+            color: #ffc107;
+        }
+
+        .theme-switcher__btn[data-theme="dark"] {
+            color: #9e9e9e;
+        }
+
+        /* Color Palette */
+        .color-palette {
+            display: flex;
+            gap: var(--spacing-xs);
+            justify-content: center;
+        }
+
+        .color-palette__swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: var(--radius-circle);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform var(--transition-fast);
+        }
+
+        .color-palette__swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .color-palette__swatch--red {
+            background-color: var(--color-primary-red);
+        }
+
+        .color-palette__swatch--orange {
+            background-color: var(--color-primary-orange);
+        }
+
+        .color-palette__swatch--blue {
+            background-color: var(--color-primary-blue);
+        }
+
+        .color-palette__swatch--green {
+            background-color: var(--color-primary-green);
+        }
+
+        .color-palette__swatch--purple {
+            background-color: var(--color-primary-purple);
+        }
+
+        .color-palette__swatch--cyan {
+            background-color: var(--color-primary-cyan);
+        }
+
+        /* Tech Stack Specific Styles */
+        .tech-stack {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .section-header {
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary-red), var(--color-primary-red));
+            border-radius: 3px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary-red), var(--color-primary-red));
+            border-radius: 3px;
+            opacity: 0.5;
+        }
+
+        .tech-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .tech-category {
+            background-color: var(--light-card-bg);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        body[data-theme="dark"] .tech-category {
+            background-color: var(--dark-card-bg);
+        }
+
+        .tech-category:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tech-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: var(--spacing-md);
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tech-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+
+        .tech-item:hover {
+            transform: scale(1.05);
+            background-color: rgba(58, 134, 255, 0.1);
+        }
+
+        body[data-theme="dark"] .tech-item:hover {
+            background-color: rgba(58, 134, 255, 0.2);
+        }
+
+        .tech-icon-container {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-circle);
+            background-color: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-xs);
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        body[data-theme="dark"] .tech-icon-container {
+            background-color: var(--dark-bg);
+        }
+
+        .tech-name {
+            font-size: 0.85rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Tooltip */
+        .tech-item {
+            position: relative;
+        }
+
+        .tech-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--light-text);
+            color: var(--light-bg);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-fast);
+            z-index: 10;
+        }
+
+        body[data-theme="dark"] .tech-item::after {
+            background-color: var(--dark-text);
+            color: var(--dark-bg);
+        }
+
+        .tech-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .tech-items {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+
+            .tech-icon-container {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- RGB Strip Animation -->
+    <div class="rgb-strip"></div>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Layout -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__header">
+                <h1 class="sidebar__logo">GS</h1>
+            </div>
+            <nav class="sidebar__nav">
+                <ul class="sidebar__menu">
+                    <li class="sidebar__item">
+                        <a href="{% url 'home' %}" class="sidebar__link">
+                            <i class="fas fa-home sidebar__icon"></i>
+                            <span class="sidebar__text">Home</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="{% url 'about' %}" class="sidebar__link">
+                            <i class="fas fa-user sidebar__icon"></i>
+                            <span class="sidebar__text">About</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item sidebar__item--active">
+                        <a href="{% url 'tech' %}" class="sidebar__link">
+                            <i class="fas fa-code sidebar__icon"></i>
+                            <span class="sidebar__text">Tech Stack</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="#projects" class="sidebar__link">
+                            <i class="fas fa-project-diagram sidebar__icon"></i>
+                            <span class="sidebar__text">Projects</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="#certificates" class="sidebar__link">
+                            <i class="fas fa-certificate sidebar__icon"></i>
+                            <span class="sidebar__text">Certificates</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="#blog" class="sidebar__link">
+                            <i class="fas fa-blog sidebar__icon"></i>
+                            <span class="sidebar__text">Blogs & Notions</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="#contact" class="sidebar__link">
+                            <i class="fas fa-envelope sidebar__icon"></i>
+                            <span class="sidebar__text">Contacts</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar__footer">
+                <div class="theme-switcher">
+                    <button class="theme-switcher__btn" data-theme="light">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button class="theme-switcher__btn" data-theme="dark">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+                <div class="color-palette">
+                    <button class="color-palette__swatch color-palette__swatch--red" data-color="red"></button>
+                    <button class="color-palette__swatch color-palette__swatch--orange" data-color="orange"></button>
+                    <button class="color-palette__swatch color-palette__swatch--blue" data-color="blue"></button>
+                    <button class="color-palette__swatch color-palette__swatch--green" data-color="green"></button>
+                    <button class="color-palette__swatch color-palette__swatch--purple" data-color="purple"></button>
+                    <button class="color-palette__swatch color-palette__swatch--cyan" data-color="cyan"></button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content" id="mainContent">
+            <div class="content__inner">
+                <!-- Background Design Elements -->
+                <div class="bg-design">
+                    <div class="bg-circle"></div>
+                    <div class="bg-circle"></div>
+                    <div class="bg-circle"></div>
+                </div>
+                
+                <!-- Tech Stack Section -->
+                <section class="tech-stack">
+                    <!-- Programming Languages -->
+                    <div class="tech-category">
+                        <h2 class="section-title">Programming Languages</h2>
+                        <ul class="tech-items">
+                            <li class="tech-item" data-tooltip="C">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <span class="tech-name">C</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="C++">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <span class="tech-name">C++</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Java">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-java"></i>
+                                </div>
+                                <span class="tech-name">Java</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Python">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-python"></i>
+                                </div>
+                                <span class="tech-name">Python</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Linux">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-linux"></i>
+                                </div>
+                                <span class="tech-name">Linux</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Go">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-golang"></i>
+                                </div>
+                                <span class="tech-name">Go</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Cloud & DevOps Stack -->
+                    <div class="tech-category">
+                        <h2 class="section-title">Cloud & DevOps Stack</h2>
+                        <ul class="tech-items">
+                            <li class="tech-item" data-tooltip="Python">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-python"></i>
+                                </div>
+                                <span class="tech-name">Python</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Linux">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-linux"></i>
+                                </div>
+                                <span class="tech-name">Linux</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Go">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-golang"></i>
+                                </div>
+                                <span class="tech-name">Go</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Bash">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-terminal"></i>
+                                </div>
+                                <span class="tech-name">Bash</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="AWS">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">AWS</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Docker">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-docker"></i>
+                                </div>
+                                <span class="tech-name">Docker</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Azure DevOps">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-microsoft"></i>
+                                </div>
+                                <span class="tech-name">Azure DevOps</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Jenkins">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-jenkins"></i>
+                                </div>
+                                <span class="tech-name">Jenkins</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Ansible">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <span class="tech-name">Ansible</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Kubernetes">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-ship"></i>
+                                </div>
+                                <span class="tech-name">Kubernetes</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Terraform">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                                <span class="tech-name">Terraform</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Grafana">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <span class="tech-name">Grafana</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Prometheus">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <span class="tech-name">Prometheus</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Maven">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <span class="tech-name">Maven</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="DataDog">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-dog"></i>
+                                </div>
+                                <span class="tech-name">DataDog</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Kubecost">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <span class="tech-name">Kubecost</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Databases -->
+                    <div class="tech-category">
+                        <h2 class="section-title">Databases</h2>
+                        <ul class="tech-items">
+                            <li class="tech-item" data-tooltip="MySQL">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <span class="tech-name">MySQL</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="PostgreSQL">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <span class="tech-name">PostgreSQL</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="DynamoDB">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <span class="tech-name">DynamoDB</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Neo4j">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <span class="tech-name">Neo4j</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Apache Cassandra">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <span class="tech-name">Cassandra</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="MonetDB">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <span class="tech-name">MonetDB</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- AWS Services -->
+                    <div class="tech-category">
+                        <h2 class="section-title">AWS Services</h2>
+                        <ul class="tech-items">
+                            <li class="tech-item" data-tooltip="EC2">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">EC2</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="VPC">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">VPC</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Lambda">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">Lambda</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="DynamoDB">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">DynamoDB</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="RDS">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">RDS</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="SageMaker">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">SageMaker</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CloudFront">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">CloudFront</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="S3">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">S3</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Route53">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">Route53</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CloudWatch">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">CloudWatch</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="ECS">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">ECS</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="EBS">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">EBS</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="SNS">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">SNS</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="IAM">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">IAM</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CodeCommit">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">CodeCommit</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CodePipeline">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">CodePipeline</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CodeBuild">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">CodeBuild</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CodeDeploy">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">CodeDeploy</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CloudFormation">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">CloudFormation</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Elastic Beanstalk">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">Elastic Beanstalk</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Amplify">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <span class="tech-name">Amplify</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Version Control -->
+                    <div class="tech-category">
+                        <h2 class="section-title">Version Control</h2>
+                        <ul class="tech-items">
+                            <li class="tech-item" data-tooltip="Git">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-git-alt"></i>
+                                </div>
+                                <span class="tech-name">Git</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="GitHub">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-github"></i>
+                                </div>
+                                <span class="tech-name">GitHub</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Web/App Development -->
+                    <div class="tech-category">
+                        <h2 class="section-title">Web/App Development</h2>
+                        <ul class="tech-items">
+                            <li class="tech-item" data-tooltip="HTML5">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-html5"></i>
+                                </div>
+                                <span class="tech-name">HTML5</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="CSS3">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-css3-alt"></i>
+                                </div>
+                                <span class="tech-name">CSS3</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="JavaScript">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-js"></i>
+                                </div>
+                                <span class="tech-name">JavaScript</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="PHP">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-php"></i>
+                                </div>
+                                <span class="tech-name">PHP</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Android">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-android"></i>
+                                </div>
+                                <span class="tech-name">Android</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Bootstrap">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-bootstrap"></i>
+                                </div>
+                                <span class="tech-name">Bootstrap</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Firebase">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <span class="tech-name">Firebase</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Designing -->
+                    <div class="tech-category">
+                        <h2 class="section-title">Designing</h2>
+                        <ul class="tech-items">
+                            <li class="tech-item" data-tooltip="Figma">
+                                <div class="tech-icon-container">
+                                    <i class="fab fa-figma"></i>
+                                </div>
+                                <span class="tech-name">Figma</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Photoshop">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <span class="tech-name">Photoshop</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="After Effects">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-film"></i>
+                                </div>
+                                <span class="tech-name">After Effects</span>
+                            </li>
+                            <li class="tech-item" data-tooltip="Lightroom">
+                                <div class="tech-icon-container">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <span class="tech-name">Lightroom</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chat Button -->
+    <button class="chat-btn">
+        <i class="fas fa-comment-dots chat-btn__icon"></i>
+        <span class="chat-btn__text">Chat with me</span>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const body = document.body;
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const mainContent = document.getElementById('mainContent');
+            const themeButtons = document.querySelectorAll('.theme-switcher__btn');
+            const colorSwatches = document.querySelectorAll('.color-palette__swatch');
+            const chatBtn = document.querySelector('.chat-btn');
+
+            // Load saved preferences
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedColor = localStorage.getItem('color') || 'blue';
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+            // Apply saved preferences
+            body.setAttribute('data-theme', savedTheme);
+            body.setAttribute('data-color', savedColor);
+            
+            if (sidebarCollapsed) {
+                sidebar.classList.add('sidebar--collapsed');
+                mainContent.style.marginLeft = '0';
+            }
+
+            // Highlight active theme button
+            document.querySelector(`.theme-switcher__btn[data-theme="${savedTheme}"]`).classList.add('active');
+
+            // Highlight active color swatch
+            document.querySelector(`.color-palette__swatch[data-color="${savedColor}"]`).classList.add('active');
+
+            // Sidebar toggle functionality
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('sidebar--collapsed');
+                const isCollapsed = sidebar.classList.contains('sidebar--collapsed');
+                mainContent.style.marginLeft = isCollapsed ? '0' : '280px';
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
+                
+                // Smooth transition for sidebar toggle
+                if (isCollapsed) {
+                    sidebar.style.boxShadow = 'none';
+                } else {
+                    setTimeout(() => {
+                        sidebar.style.boxShadow = '2px 0 10px rgba(0, 0, 0, 0.1)';
+                    }, 300);
+                }
+            });
+
+            // Theme switcher event listeners
+            themeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    body.setAttribute('data-theme', theme);
+                    localStorage.setItem('theme', theme);
+
+                    // Update active button
+                    themeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Trigger RGB animation
+                    triggerRGBEffect();
+                });
+            });
+
+            // Color switcher event listeners
+            colorSwatches.forEach(swatch => {
+                swatch.addEventListener('click', function() {
+                    const color = this.getAttribute('data-color');
+                    body.setAttribute('data-color', color);
+                    localStorage.setItem('color', color);
+
+                    // Update active swatch
+                    colorSwatches.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Trigger RGB animation
+                    triggerRGBEffect();
+                });
+            });
+
+            // Chat button functionality
+            chatBtn.addEventListener('click', function() {
+                // Add animation to chat button
+                this.classList.add('rgb-animate');
+                setTimeout(() => {
+                    this.classList.remove('rgb-animate');
+                    alert('Chat functionality will be implemented soon!');
+                }, 500);
+            });
+
+            // Function to trigger RGB effect
+            function triggerRGBEffect() {
+                // Add pulse effect to elements
+                const highlightElements = document.querySelectorAll('.section-title');
+                highlightElements.forEach(el => {
+                    el.classList.add('rgb-animate');
+                    setTimeout(() => {
+                        el.classList.remove('rgb-animate');
+                    }, 500);
+                });
+            }
+            
+            // Add fade-in animation to tech items when they come into view
+            const techItems = document.querySelectorAll('.tech-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            techItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+</html>
