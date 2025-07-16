@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" data-theme="light" data-color="blue">
@@ -370,7 +371,7 @@
         .content {
             flex: 1;
             padding: var(--spacing-xl);
-            margin-left: 280px;
+            margin-left: 130px;
             transition: all var(--transition-normal);
             display: flex;
             justify-content: flex-start;
@@ -475,7 +476,7 @@
 
         .tech-items {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: var(--spacing-md);
             list-style: none;
             padding: 0;
@@ -491,6 +492,7 @@
             transition: all var(--transition-fast);
             opacity: 0;
             transform: translateY(20px);
+            position: relative;
         }
 
         .tech-item.visible {
@@ -501,81 +503,114 @@
         .tech-item:hover {
             transform: scale(1.05) translateY(-5px);
             background-color: rgba(58, 134, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         body[data-theme="dark"] .tech-item:hover {
             background-color: rgba(58, 134, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
+        /* Enhanced Tech Icon Container */
         .tech-icon-container {
-            width: 60px;
-            height: 60px;
-            border-radius: var(--radius-circle);
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-md);
             background-color: var(--light-bg);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: var(--spacing-xs);
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             color: var(--color-primary);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-icon-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(58, 134, 255, 0.1) 0%, 
+                rgba(131, 56, 236, 0.1) 100%);
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .tech-item:hover .tech-icon-container::before {
+            opacity: 1;
         }
 
         .tech-icon-container img {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
-            transition: transform var(--transition-fast);
+            transition: all var(--transition-fast);
+            z-index: 1;
         }
 
         .tech-item:hover .tech-icon-container img {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         }
 
         body[data-theme="dark"] .tech-icon-container {
             background-color: var(--dark-bg);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .tech-name {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             text-align: center;
             font-weight: 500;
-            display: none;
-        }
-
-        /* Tooltip */
-        .tech-item {
-            position: relative;
-        }
-
-        .tech-item::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--light-text);
-            color: var(--light-bg);
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            white-space: nowrap;
+            margin-top: var(--spacing-xs);
             opacity: 0;
-            pointer-events: none;
+            transform: translateY(10px);
             transition: all var(--transition-fast);
+            position: absolute;
+            bottom: -20px;
+            background: var(--color-primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            white-space: nowrap;
+            pointer-events: none;
             z-index: 10;
         }
 
-        body[data-theme="dark"] .tech-item::after {
-            background-color: var(--dark-text);
-            color: var(--dark-bg);
+        .tech-item:hover .tech-name {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .tech-item:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-5px);
+        /* Tooltip - Replaced with the visible tech-name */
+        .tech-item::after {
+            display: none;
+        }
+
+        /* Skill Level Indicator */
+        .skill-level {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            overflow: hidden;
+        }
+
+        .skill-level__fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-purple));
+            width: 80%;
+            transition: width var(--transition-slow);
         }
 
         /* Chat Button */
@@ -618,17 +653,33 @@
             }
 
             .tech-items {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+
+            .tech-icon-container {
+                width: 70px;
+                height: 70px;
+            }
+
+            .tech-icon-container img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tech-items {
                 grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             }
 
             .tech-icon-container {
-                width: 50px;
-                height: 50px;
+                width: 60px;
+                height: 60px;
             }
 
             .tech-icon-container img {
-                width: 30px;
-                height: 30px;
+                width: 35px;
+                height: 35px;
             }
         }
     </style>
@@ -729,11 +780,16 @@
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP">
                                 </div>
+                                <span class="tech-name">PHP</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 85%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="Python">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
                                 </div>
+                                <span class="tech-name">Python</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 75%"></div></div>
+                            </li>
                         </ul>
                     </div>
 
@@ -745,21 +801,29 @@
                                 <div class="tech-icon-container">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT">
                                 </div>
+                                <span class="tech-name">ChatGPT</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 90%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="AI Web Dev Tools">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn-icons-png.flaticon.com/512/2821/2821637.png" alt="AI Web Dev">
                                 </div>
+                                <span class="tech-name">AI Web Dev</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 80%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="Midjourney">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn-icons-png.flaticon.com/512/5968/5968527.png" alt="Midjourney">
                                 </div>
+                                <span class="tech-name">Midjourney</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 70%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="GitHub Copilot">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn-icons-png.flaticon.com/512/5969/5969610.png" alt="GitHub Copilot">
                                 </div>
+                                <span class="tech-name">GitHub Copilot</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 85%"></div></div>
                             </li>
                         </ul>
                     </div>
@@ -772,21 +836,29 @@
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL">
                                 </div>
+                                <span class="tech-name">SQL</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 80%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="PgAdmin">
                                 <div class="tech-icon-container">
                                     <img src="https://www.pgadmin.org/img/pgadmin4.png" alt="PgAdmin">
                                 </div>
+                                <span class="tech-name">PgAdmin</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 75%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="PostgreSQL">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL">
                                 </div>
+                                <span class="tech-name">PostgreSQL</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 70%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="MongoDB">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB">
                                 </div>
+                                <span class="tech-name">MongoDB</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 65%"></div></div>
                             </li>
                         </ul>
                     </div>
@@ -799,6 +871,8 @@
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
                                 </div>
+                                <span class="tech-name">GitHub</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 85%"></div></div>
                             </li>
                         </ul>
                     </div>
@@ -810,36 +884,50 @@
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
                                 </div>
+                                <span class="tech-name">HTML5</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 90%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="CSS3">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
                                 </div>
+                                <span class="tech-name">CSS3</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 85%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="JavaScript">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
                                 </div>
+                                <span class="tech-name">JavaScript</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 80%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="PHP">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP">
                                 </div>
+                                <span class="tech-name">PHP</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 85%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="Android">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android">
                                 </div>
+                                <span class="tech-name">Android</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 70%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="Bootstrap">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap">
                                 </div>
+                                <span class="tech-name">Bootstrap</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 85%"></div></div>
                             </li>
                             <li class="tech-item" data-tooltip="Firebase">
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase">
                                 </div>
+                                <span class="tech-name">Firebase</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 75%"></div></div>
                             </li>
                         </ul>
                     </div>
@@ -852,6 +940,8 @@
                                 <div class="tech-icon-container">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma">
                                 </div>
+                                <span class="tech-name">Figma</span>
+                                <div class="skill-level"><div class="skill-level__fill" style="width: 80%"></div></div>
                             </li>
                         </ul>
                     </div>
@@ -867,130 +957,203 @@
     </button>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const body = document.body;
-            const sidebar = document.getElementById('sidebar');
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const mainContent = document.getElementById('mainContent');
-            const themeButtons = document.querySelectorAll('.theme-switcher__btn');
-            const colorSwatches = document.querySelectorAll('.color-palette__swatch');
-            const chatBtn = document.querySelector('.chat-btn');
+    document.addEventListener('DOMContentLoaded', function() {
+        // DOM Elements
+        const body = document.body;
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mainContent = document.getElementById('mainContent');
+        const themeButtons = document.querySelectorAll('.theme-switcher__btn');
+        const colorSwatches = document.querySelectorAll('.color-palette__swatch');
+        const chatBtn = document.querySelector('.chat-btn');
 
-            // Load saved preferences
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            const savedColor = localStorage.getItem('color') || 'blue';
-            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-
-            // Apply saved preferences
-            body.setAttribute('data-theme', savedTheme);
-            body.setAttribute('data-color', savedColor);
-            
-            if (sidebarCollapsed) {
-                sidebar.classList.add('sidebar--collapsed');
-                mainContent.style.marginLeft = '0';
+        // Color definitions
+        const colorVariables = {
+            red: {
+                primary: '#ff4d4d',
+                primaryRed: '#ff4d4d',
+                primaryOrange: '#ff8c42',
+                primaryBlue: '#3a86ff',
+                primaryGreen: '#06d6a0',
+                primaryPurple: '#8338ec',
+                primaryCyan: '#00b4d8'
+            },
+            orange: {
+                primary: '#ff8c42',
+                primaryRed: '#ff4d4d',
+                primaryOrange: '#ff8c42',
+                primaryBlue: '#3a86ff',
+                primaryGreen: '#06d6a0',
+                primaryPurple: '#8338ec',
+                primaryCyan: '#00b4d8'
+            },
+            blue: {
+                primary: '#3a86ff',
+                primaryRed: '#ff4d4d',
+                primaryOrange: '#ff8c42',
+                primaryBlue: '#3a86ff',
+                primaryGreen: '#06d6a0',
+                primaryPurple: '#8338ec',
+                primaryCyan: '#00b4d8'
+            },
+            green: {
+                primary: '#06d6a0',
+                primaryRed: '#ff4d4d',
+                primaryOrange: '#ff8c42',
+                primaryBlue: '#3a86ff',
+                primaryGreen: '#06d6a0',
+                primaryPurple: '#8338ec',
+                primaryCyan: '#00b4d8'
+            },
+            purple: {
+                primary: '#8338ec',
+                primaryRed: '#ff4d4d',
+                primaryOrange: '#ff8c42',
+                primaryBlue: '#3a86ff',
+                primaryGreen: '#06d6a0',
+                primaryPurple: '#8338ec',
+                primaryCyan: '#00b4d8'
+            },
+            cyan: {
+                primary: '#00b4d8',
+                primaryRed: '#ff4d4d',
+                primaryOrange: '#ff8c42',
+                primaryBlue: '#3a86ff',
+                primaryGreen: '#06d6a0',
+                primaryPurple: '#8338ec',
+                primaryCyan: '#00b4d8'
             }
+        };
 
-            // Highlight active theme button
-            themeButtons.forEach(btn => {
-                if (btn.getAttribute('data-theme') === savedTheme) {
-                    btn.classList.add('active');
-                }
-            });
+        // Load saved preferences
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedColor = localStorage.getItem('color') || 'blue';
+        const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
 
-            // Highlight active color swatch
-            colorSwatches.forEach(swatch => {
-                if (swatch.getAttribute('data-color') === savedColor) {
-                    swatch.classList.add('active');
-                }
-            });
+        // Apply saved preferences
+        body.setAttribute('data-theme', savedTheme);
+        applyColorScheme(savedColor);
+        
+        if (sidebarCollapsed) {
+            sidebar.classList.add('sidebar--collapsed');
+            mainContent.style.marginLeft = '0';
+        }
 
-            // Sidebar toggle functionality
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('sidebar--collapsed');
-                const isCollapsed = sidebar.classList.contains('sidebar--collapsed');
-                mainContent.style.marginLeft = isCollapsed ? '0' : '280px';
-                localStorage.setItem('sidebarCollapsed', isCollapsed);
-                
-                // Smooth transition for sidebar toggle
-                if (isCollapsed) {
-                    sidebar.style.boxShadow = 'none';
-                } else {
-                    setTimeout(() => {
-                        sidebar.style.boxShadow = '2px 0 10px rgba(0, 0, 0, 0.1)';
-                    }, 300);
-                }
-            });
+        // Highlight active theme button
+        themeButtons.forEach(btn => {
+            if (btn.getAttribute('data-theme') === savedTheme) {
+                btn.classList.add('active');
+            }
+        });
 
-            // Theme switcher event listeners
-            themeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const theme = this.getAttribute('data-theme');
-                    body.setAttribute('data-theme', theme);
-                    localStorage.setItem('theme', theme);
+        // Highlight active color swatch
+        colorSwatches.forEach(swatch => {
+            if (swatch.getAttribute('data-color') === savedColor) {
+                swatch.classList.add('active');
+            }
+        });
 
-                    // Update active button
-                    themeButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // Trigger RGB animation
-                    triggerRGBEffect();
-                });
-            });
-
-            // Color switcher event listeners
-            colorSwatches.forEach(swatch => {
-                swatch.addEventListener('click', function() {
-                    const color = this.getAttribute('data-color');
-                    body.setAttribute('data-color', color);
-                    localStorage.setItem('color', color);
-
-                    // Update active swatch
-                    colorSwatches.forEach(s => s.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // Trigger RGB animation
-                    triggerRGBEffect();
-                });
-            });
-
-            // Chat button functionality
-            chatBtn.addEventListener('click', function() {
-                // Add animation to chat button
-                this.classList.add('rgb-animate');
+        // Sidebar toggle functionality
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('sidebar--collapsed');
+            const isCollapsed = sidebar.classList.contains('sidebar--collapsed');
+            mainContent.style.marginLeft = isCollapsed ? '0' : '280px';
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+            
+            // Smooth transition for sidebar toggle
+            if (isCollapsed) {
+                sidebar.style.boxShadow = 'none';
+            } else {
                 setTimeout(() => {
-                    this.classList.remove('rgb-animate');
-                    alert('Chat functionality will be implemented soon!');
-                }, 500);
-            });
-
-            // Function to trigger RGB effect
-            function triggerRGBEffect() {
-                // Add pulse effect to elements
-                const highlightElements = document.querySelectorAll('.section-title');
-                highlightElements.forEach(el => {
-                    el.classList.add('rgb-animate');
-                    setTimeout(() => {
-                        el.classList.remove('rgb-animate');
-                    }, 500);
-                });
+                    sidebar.style.boxShadow = '2px 0 10px rgba(0, 0, 0, 0.1)';
+                }, 300);
             }
-            
-            // Add fade-in animation to tech items when they come into view
-            const techItems = document.querySelectorAll('.tech-item');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
+        });
 
-            techItems.forEach(item => {
-                item.style.transition = 'all 0.5s ease';
-                observer.observe(item);
+        // Theme switcher event listeners
+        themeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const theme = this.getAttribute('data-theme');
+                body.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+
+                // Update active button
+                themeButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                // Trigger RGB animation
+                triggerRGBEffect();
             });
         });
-    </script>
+
+        // Color switcher event listeners
+        colorSwatches.forEach(swatch => {
+            swatch.addEventListener('click', function() {
+                const color = this.getAttribute('data-color');
+                applyColorScheme(color);
+                localStorage.setItem('color', color);
+
+                // Update active swatch
+                colorSwatches.forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+
+                // Trigger RGB animation
+                triggerRGBEffect();
+            });
+        });
+
+        // Function to apply color scheme
+        function applyColorScheme(color) {
+            body.setAttribute('data-color', color);
+            const colors = colorVariables[color];
+            
+            // Update CSS variables
+            document.documentElement.style.setProperty('--color-primary', colors.primary);
+            document.documentElement.style.setProperty('--color-primary-red', colors.primaryRed);
+            document.documentElement.style.setProperty('--color-primary-orange', colors.primaryOrange);
+            document.documentElement.style.setProperty('--color-primary-blue', colors.primaryBlue);
+            document.documentElement.style.setProperty('--color-primary-green', colors.primaryGreen);
+            document.documentElement.style.setProperty('--color-primary-purple', colors.primaryPurple);
+            document.documentElement.style.setProperty('--color-primary-cyan', colors.primaryCyan);
+        }
+
+        // Chat button functionality
+        chatBtn.addEventListener('click', function() {
+            // Add animation to chat button
+            this.classList.add('rgb-animate');
+            setTimeout(() => {
+                this.classList.remove('rgb-animate');
+                alert('Chat functionality will be implemented soon!');
+            }, 500);
+        });
+
+        // Function to trigger RGB effect
+        function triggerRGBEffect() {
+            // Add pulse effect to elements
+            const highlightElements = document.querySelectorAll('.section-title');
+            highlightElements.forEach(el => {
+                el.classList.add('rgb-animate');
+                setTimeout(() => {
+                    el.classList.remove('rgb-animate');
+                }, 500);
+            });
+        }
+        
+        // Add fade-in animation to tech items when they come into view
+        const techItems = document.querySelectorAll('.tech-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        techItems.forEach(item => {
+            item.style.transition = 'all 0.5s ease';
+            observer.observe(item);
+        });
+    });
+</script>
 </body>
 </html>

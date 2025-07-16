@@ -141,7 +141,8 @@
             display: flex;
             flex-direction: column;
             transition: all var(--transition-normal);
-            position: relative;
+            position: fixed;
+            height: 100%;
             z-index: 1000;
         }
 
@@ -151,7 +152,7 @@
         }
 
         .sidebar--collapsed {
-            margin-left: -280px;
+            transform: translateX(-280px);
         }
 
         .sidebar__header {
@@ -287,11 +288,13 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
 
-        .theme-switcher__btn[data-theme="light"] {
+        .theme-switcher__btn.active[data-theme="light"] {
+            background-color: rgba(0, 0, 0, 0.1);
             color: #ffc107;
         }
 
-        .theme-switcher__btn[data-theme="dark"] {
+        .theme-switcher__btn.active[data-theme="dark"] {
+            background-color: rgba(255, 255, 255, 0.1);
             color: #9e9e9e;
         }
 
@@ -313,6 +316,15 @@
 
         .color-palette__swatch:hover {
             transform: scale(1.1);
+        }
+
+        .color-palette__swatch.active {
+            border-color: var(--light-text);
+            transform: scale(1.1);
+        }
+
+        body[data-theme="dark"] .color-palette__swatch.active {
+            border-color: var(--dark-text);
         }
 
         .color-palette__swatch--red {
@@ -344,6 +356,7 @@
             flex: 1;
             padding: var(--spacing-xl);
             transition: all var(--transition-normal);
+            margin-left: 280px;
         }
 
         /* Contact Section Styles */
@@ -487,7 +500,7 @@
             border: 1px solid var(--light-border);
             border-radius: var(--radius-sm);
             font-family: 'Inter', sans-serif;
-            background-color: var(--light-bg);
+            background-color: var(--light-card-bg);
             color: var(--light-text);
             transition: all var(--transition-fast);
             font-size: 0.95rem;
@@ -495,7 +508,7 @@
 
         body[data-theme="dark"] .form-input {
             border-color: var(--dark-border);
-            background-color: var(--dark-bg);
+            background-color: var(--dark-card-bg);
             color: var(--dark-text);
         }
 
@@ -570,9 +583,29 @@
             font-weight: 500;
         }
 
+        /* X (Twitter) icon fix */
+        .fa-x-twitter {
+            font-size: 0.95rem;
+            position: relative;
+            top: -1px;
+        }
+
         @media (max-width: 768px) {
             .content {
                 padding: var(--spacing-md);
+                margin-left: 0;
+            }
+            
+            .sidebar {
+                transform: translateX(-280px);
+            }
+            
+            .sidebar--collapsed {
+                transform: translateX(-280px);
+            }
+            
+            .sidebar-toggle.active + .sidebar {
+                transform: translateX(0);
             }
             
             .contact-container {
@@ -581,7 +614,7 @@
             
             .form-row {
                 flex-direction: column;
-                gap: 0;
+                gap: var(--spacing-sm);
             }
 
             .sidebar-toggle {
@@ -691,15 +724,15 @@
                 <!-- Social Links Section -->
                 <div class="social-section">
                     <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-twitter social-icon"></i>
-                            <span class="social-text">Twitter</span>
+                        <a href="https://x.com/gau_rav__14321" class="social-link">
+                            <i class="fa-brands fa-x-twitter social-icon"></i>
+                            <span class="social-text">X (Twitter)</span>
                         </a>
-                        <a href="#" class="social-link">
+                        <a href="https://www.linkedin.com/in/gaurav-shrivastava-ba0316253/" class="social-link">
                             <i class="fab fa-linkedin-in social-icon"></i>
                             <span class="social-text">LinkedIn</span>
                         </a>
-                        <a href="#" class="social-link">
+                        <a href="https://github.com/gauravshrivastava14" class="social-link">
                             <i class="fab fa-github social-icon"></i>
                             <span class="social-text">GitHub</span>
                         </a>
@@ -726,11 +759,12 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="id_name" class="form-label">Name</label>
-                                <input type="text" id="id_name" name="name" class="form-input" required>
+                                <input type="text" id="id_name" name="name" class="form-input" required  placeholder="Enter your Name">
                             </div>
+                            <br>
                             <div class="form-group">
                                 <label for="id_email" class="form-label">Email</label>
-                                <input type="email" id="id_email" name="email" class="form-input" required>
+                                <input type="email" id="id_email" name="email" class="form-input" required placeholder="Enter your email address">
                             </div>
                         </div>
                         
@@ -769,23 +803,33 @@
 
             // Load saved preferences
             const savedTheme = localStorage.getItem('theme') || 'light';
-            const savedColor = localStorage.getItem('color') || 'blue';
+            const savedColor = localStorage.getItem('color') || 'red';
             const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
 
             // Apply saved preferences
             body.setAttribute('data-theme', savedTheme);
             body.setAttribute('data-color', savedColor);
+            updatePrimaryColor(savedColor);
             
+            // Set initial sidebar state
             if (sidebarCollapsed) {
                 sidebar.classList.add('sidebar--collapsed');
                 mainContent.style.marginLeft = '0';
             }
 
             // Highlight active theme button
-            document.querySelector(`.theme-switcher__btn[data-theme="${savedTheme}"]`).classList.add('active');
+            themeButtons.forEach(btn => {
+                if (btn.getAttribute('data-theme') === savedTheme) {
+                    btn.classList.add('active');
+                }
+            });
 
             // Highlight active color swatch
-            document.querySelector(`.color-palette__swatch[data-color="${savedColor}"]`).classList.add('active');
+            colorSwatches.forEach(swatch => {
+                if (swatch.getAttribute('data-color') === savedColor) {
+                    swatch.classList.add('active');
+                }
+            });
 
             // Sidebar toggle functionality
             sidebarToggle.addEventListener('click', function() {
@@ -794,14 +838,8 @@
                 mainContent.style.marginLeft = isCollapsed ? '0' : '280px';
                 localStorage.setItem('sidebarCollapsed', isCollapsed);
                 
-                // Smooth transition for sidebar toggle
-                if (isCollapsed) {
-                    sidebar.style.boxShadow = 'none';
-                } else {
-                    setTimeout(() => {
-                        sidebar.style.boxShadow = '2px 0 10px rgba(0, 0, 0, 0.1)';
-                    }, 300);
-                }
+                // Update toggle button state
+                this.classList.toggle('active');
             });
 
             // Theme switcher event listeners
@@ -826,6 +864,7 @@
                     const color = this.getAttribute('data-color');
                     body.setAttribute('data-color', color);
                     localStorage.setItem('color', color);
+                    updatePrimaryColor(color);
 
                     // Update active swatch
                     colorSwatches.forEach(s => s.classList.remove('active'));
@@ -835,6 +874,33 @@
                     triggerRGBEffect();
                 });
             });
+
+            // Update primary color based on selection
+            function updatePrimaryColor(color) {
+                const root = document.documentElement;
+                switch(color) {
+                    case 'red':
+                        root.style.setProperty('--color-primary', 'var(--color-primary-red)');
+                        break;
+                    case 'orange':
+                        root.style.setProperty('--color-primary', 'var(--color-primary-orange)');
+                        break;
+                    case 'blue':
+                        root.style.setProperty('--color-primary', 'var(--color-primary-blue)');
+                        break;
+                    case 'green':
+                        root.style.setProperty('--color-primary', 'var(--color-primary-green)');
+                        break;
+                    case 'purple':
+                        root.style.setProperty('--color-primary', 'var(--color-primary-purple)');
+                        break;
+                    case 'cyan':
+                        root.style.setProperty('--color-primary', 'var(--color-primary-cyan)');
+                        break;
+                    default:
+                        root.style.setProperty('--color-primary', 'var(--color-primary-red)');
+                }
+            }
 
             // Chat button functionality
             chatBtn.addEventListener('click', function() {
@@ -848,12 +914,11 @@
 
             // Function to trigger RGB effect
             function triggerRGBEffect() {
-                // Add animation to profile border
-                const profileBorder = document.querySelector('.profile-border');
-                if (profileBorder) {
-                    profileBorder.style.animation = 'none';
-                    void profileBorder.offsetWidth; // Trigger reflow
-                    profileBorder.style.animation = `rgbAnimation ${getComputedStyle(document.documentElement).getPropertyValue('--rgb-animation-duration')} linear infinite`;
+                const rgbStrip = document.querySelector('.rgb-strip');
+                if (rgbStrip) {
+                    rgbStrip.style.animation = 'none';
+                    void rgbStrip.offsetWidth; // Trigger reflow
+                    rgbStrip.style.animation = `rgbAnimation ${getComputedStyle(document.documentElement).getPropertyValue('--rgb-animation-duration')} linear infinite`;
                 }
                 
                 // Add pulse effect to elements
@@ -872,6 +937,16 @@
                 contactForm.addEventListener('submit', function() {
                     // Optional success message, but let Django handle the POST
                     console.log("Form submitted to backend.");
+                });
+            }
+
+            // Mobile sidebar toggle
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('sidebar--collapsed');
+                mainContent.style.marginLeft = '0';
+                
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('sidebar--collapsed');
                 });
             }
         });
