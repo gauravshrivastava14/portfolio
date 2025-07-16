@@ -17,13 +17,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main import views
-from django.http import HttpResponse
-from django.core.management import call_command
-
-def run_migrations(request):
-    call_command("migrate")
-    call_command("collectstatic", "--noinput")
-    return HttpResponse("✅ Migrations and static collection complete.")
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -32,8 +25,5 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('certificates/', views.certificates, name='certificates'),
     path('blog/', views.blog, name='blog'),
-
-    # 👇 Temporary migration trigger route
-    path('run-migrations/', run_migrations),
 ]
 
