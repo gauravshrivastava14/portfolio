@@ -12,6 +12,8 @@ def certificates(request):
     return render(request, 'certificates.html')
 def blog (request):
     return render(request, 'blog.html')
+def project (request):
+    return render(request, 'project.html')
 
 def contact_view(request):
     if request.method == 'POST':

@@ -109,6 +109,25 @@
             transition: margin-left var(--transition-normal);
         }
 
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-normal), visibility var(--transition-normal);
+        }
+
+        body.sidebar-open .mobile-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Sidebar Toggle Button */
         .sidebar-toggle {
             position: fixed;
@@ -140,10 +159,12 @@
             border-right: 1px solid var(--light-border);
             display: flex;
             flex-direction: column;
-            transition: all var(--transition-normal);
+            transition: transform var(--transition-normal);
             position: fixed;
             height: 100%;
             z-index: 1000;
+            left: 0;
+            top: 0;
         }
 
         body[data-theme="dark"] .sidebar {
@@ -152,7 +173,7 @@
         }
 
         .sidebar--collapsed {
-            transform: translateX(-280px);
+            transform: translateX(-100%);
         }
 
         .sidebar__header {
@@ -597,14 +618,11 @@
             }
             
             .sidebar {
-                transform: translateX(-280px);
+                transform: translateX(-100%);
+                z-index: 1001;
             }
             
-            .sidebar--collapsed {
-                transform: translateX(-280px);
-            }
-            
-            .sidebar-toggle.active + .sidebar {
+            body.sidebar-open .sidebar {
                 transform: translateX(0);
             }
             
@@ -628,6 +646,51 @@
                 padding: 0.7rem 1.2rem;
                 font-size: 0.9rem;
             }
+
+            .contact-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .social-link {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: var(--spacing-sm);
+            }
+
+            .contact-container {
+                padding: var(--spacing-sm);
+            }
+
+            .contact-title {
+                font-size: 1.8rem;
+            }
+
+            .contact-subtitle {
+                font-size: 1rem;
+            }
+
+            .sidebar__logo {
+                width: 60px;
+                height: 60px;
+                line-height: 60px;
+                font-size: 2rem;
+            }
+
+            .sidebar__link {
+                padding: 0.8rem 1rem;
+            }
+
+            .sidebar__icon {
+                margin-right: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -635,6 +698,9 @@
     
     <!-- RGB Strip Animation -->
     <div class="rgb-strip"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
 
     <!-- Sidebar Toggle Button -->
     <button class="sidebar-toggle" id="sidebarToggle">
@@ -644,7 +710,7 @@
     <!-- Main Layout -->
     <div class="layout">
         <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar sidebar--collapsed" id="sidebar">
             <div class="sidebar__header">
                 <h1 class="sidebar__logo">GS</h1>
             </div>
@@ -796,10 +862,14 @@
             const body = document.body;
             const sidebar = document.getElementById('sidebar');
             const sidebarToggle = document.getElementById('sidebarToggle');
+            const mobileOverlay = document.getElementById('mobileOverlay');
             const mainContent = document.getElementById('mainContent');
             const themeButtons = document.querySelectorAll('.theme-switcher__btn');
             const colorSwatches = document.querySelectorAll('.color-palette__swatch');
             const chatBtn = document.querySelector('.chat-btn');
+
+            // Check if mobile device
+            const isMobile = window.innerWidth <= 768;
 
             // Load saved preferences
             const savedTheme = localStorage.getItem('theme') || 'light';
@@ -812,9 +882,17 @@
             updatePrimaryColor(savedColor);
             
             // Set initial sidebar state
-            if (sidebarCollapsed) {
+            if (isMobile) {
                 sidebar.classList.add('sidebar--collapsed');
                 mainContent.style.marginLeft = '0';
+            } else {
+                if (sidebarCollapsed) {
+                    sidebar.classList.add('sidebar--collapsed');
+                    mainContent.style.marginLeft = '0';
+                } else {
+                    sidebar.classList.remove('sidebar--collapsed');
+                    mainContent.style.marginLeft = '280px';
+                }
             }
 
             // Highlight active theme button
@@ -833,13 +911,25 @@
 
             // Sidebar toggle functionality
             sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('sidebar--collapsed');
-                const isCollapsed = sidebar.classList.contains('sidebar--collapsed');
-                mainContent.style.marginLeft = isCollapsed ? '0' : '280px';
-                localStorage.setItem('sidebarCollapsed', isCollapsed);
+                if (isMobile) {
+                    body.classList.toggle('sidebar-open');
+                } else {
+                    sidebar.classList.toggle('sidebar--collapsed');
+                    const isCollapsed = sidebar.classList.contains('sidebar--collapsed');
+                    mainContent.style.marginLeft = isCollapsed ? '0' : '280px';
+                    localStorage.setItem('sidebarCollapsed', isCollapsed);
+                }
                 
                 // Update toggle button state
                 this.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking on overlay (mobile only)
+            mobileOverlay.addEventListener('click', function() {
+                if (isMobile) {
+                    body.classList.remove('sidebar-open');
+                    sidebarToggle.classList.remove('active');
+                }
             });
 
             // Theme switcher event listeners
@@ -940,13 +1030,14 @@
                 });
             }
 
-            // Mobile sidebar toggle
-            if (window.innerWidth <= 768) {
-                sidebar.classList.add('sidebar--collapsed');
-                mainContent.style.marginLeft = '0';
-                
-                sidebarToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('sidebar--collapsed');
+            // Close sidebar when clicking on a link (mobile only)
+            if (isMobile) {
+                const sidebarLinks = document.querySelectorAll('.sidebar__link');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        body.classList.remove('sidebar-open');
+                        sidebarToggle.classList.remove('active');
+                    });
                 });
             }
         });

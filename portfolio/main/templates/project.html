@@ -1,0 +1,1272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-color="blue">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaurav Shrivastava | Projects</title>
+    <link rel="icon" type="image/png" href="{% static 'images/g-s-letter-logo-design-with-swoosh-design-concept-free-vector.jpg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            /* Light Theme Colors */
+            --light-bg: #f8f9fa;
+            --light-text: #333333;
+            --light-sidebar-bg: #ffffff;
+            --light-card-bg: #ffffff;
+            --light-border: #e0e0e0;
+
+            /* Dark Theme Colors */
+            --dark-bg: #121212;
+            --dark-text: #f0f0f0;
+            --dark-sidebar-bg: #1e1e1e;
+            --dark-card-bg: #252525;
+            --dark-border: #333333;
+
+            /* Theme Colors */
+            --color-primary: #3a86ff; /* Blue as default */
+            --color-primary-red: #ff4d4d;
+            --color-primary-orange: #ff8c42;
+            --color-primary-blue: #3a86ff;
+            --color-primary-green: #06d6a0;
+            --color-primary-purple: #8338ec;
+            --color-primary-cyan: #00b4d8;
+
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-circle: 50%;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+
+            /* RGB Strip */
+            --rgb-strip-height: 4px;
+            --rgb-animation-duration: 15s;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            overflow-x: hidden;
+        }
+
+        body[data-theme="dark"] {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        /* RGB Strip Animation */
+        .rgb-strip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--rgb-strip-height);
+            background: linear-gradient(90deg, 
+                var(--color-primary-red), 
+                var(--color-primary-orange), 
+                var(--color-primary-blue), 
+                var(--color-primary-green), 
+                var(--color-primary-purple), 
+                var(--color-primary-cyan), 
+                var(--color-primary-red));
+            background-size: 400% 400%;
+            animation: rgbAnimation var(--rgb-animation-duration) linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes rgbAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            transition: margin-left var(--transition-normal);
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            position: fixed;
+            top: var(--spacing-md);
+            left: var(--spacing-md);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-circle);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-fast);
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--light-sidebar-bg);
+            border-right: 1px solid var(--light-border);
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+            position: relative;
+            z-index: 1000;
+        }
+
+        body[data-theme="dark"] .sidebar {
+            background-color: var(--dark-sidebar-bg);
+            border-right-color: var(--dark-border);
+        }
+
+        .sidebar--collapsed {
+            margin-left: -280px;
+        }
+
+        .sidebar__header {
+            padding: var(--spacing-lg);
+            text-align: center;
+            position: relative;
+        }
+
+        .sidebar__logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            transition: all var(--transition-normal);
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: var(--radius-circle);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-purple));
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar__logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+
+        .sidebar__nav {
+            flex: 1;
+            padding: var(--spacing-md) 0;
+        }
+
+        .sidebar__menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar__item {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .sidebar__link {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            color: inherit;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .sidebar__link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body[data-theme="dark"] .sidebar__link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar__item--active .sidebar__link {
+            background-color: rgba(58, 134, 255, 0.1);
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .sidebar__icon {
+            width: 24px;
+            margin-right: var(--spacing-sm);
+            text-align: center;
+        }
+
+        .sidebar__text {
+            font-weight: 500;
+        }
+
+        .sidebar__footer {
+            padding: var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xs);
+        }
+
+        body[data-theme="dark"] .theme-switcher {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-switcher__btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--light-text);
+            transition: all var(--transition-fast);
+        }
+
+        body[data-theme="dark"] .theme-switcher__btn {
+            color: var(--dark-text);
+        }
+
+        .theme-switcher__btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="dark"] .theme-switcher__btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-switcher__btn.active {
+            background-color: rgba(58, 134, 255, 0.2);
+        }
+
+        .theme-switcher__btn[data-theme="light"] {
+            color: #ffc107;
+        }
+
+        .theme-switcher__btn[data-theme="dark"] {
+            color: #9e9e9e;
+        }
+
+        /* Color Palette */
+        .color-palette {
+            display: flex;
+            gap: var(--spacing-xs);
+            justify-content: center;
+        }
+
+        .color-palette__swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: var(--radius-circle);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform var(--transition-fast);
+        }
+
+        .color-palette__swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .color-palette__swatch.active {
+            border-color: var(--light-text);
+            transform: scale(1.1);
+        }
+
+        body[data-theme="dark"] .color-palette__swatch.active {
+            border-color: var(--dark-text);
+        }
+
+        .color-palette__swatch--red {
+            background-color: var(--color-primary-red);
+        }
+
+        .color-palette__swatch--orange {
+            background-color: var(--color-primary-orange);
+        }
+
+        .color-palette__swatch--blue {
+            background-color: var(--color-primary-blue);
+        }
+
+        .color-palette__swatch--green {
+            background-color: var(--color-primary-green);
+        }
+
+        .color-palette__swatch--purple {
+            background-color: var(--color-primary-purple);
+        }
+
+        .color-palette__swatch--cyan {
+            background-color: var(--color-primary-cyan);
+        }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: var(--spacing-xl);
+            margin-left: 60px;
+            transition: margin-left var(--transition-normal);
+        }
+
+        .sidebar--collapsed + .content {
+            margin-left: 0;
+        }
+
+        /* Projects Section */
+        .projects-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .project-card {
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            background-color: var(--light-card-bg);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--light-border);
+        }
+
+        body[data-theme="dark"] .project-card {
+            background-color: var(--dark-card-bg);
+            border-color: var(--dark-border);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .remove-project {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: var(--color-primary-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .project-card:hover .remove-project {
+            opacity: 0.9;
+        }
+
+        .remove-project:hover {
+            opacity: 1 !important;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--light-text);
+        }
+
+        body[data-theme="dark"] .project-title {
+            color: var(--dark-text);
+        }
+
+        .project-description {
+            color: var(--light-text);
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        body[data-theme="dark"] .project-description {
+            color: var(--dark-text);
+            opacity: 0.7;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .github-link {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--light-text);
+        }
+
+        body[data-theme="dark"] .github-link {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--dark-text);
+        }
+
+        .github-link:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body[data-theme="dark"] .github-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-link {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .demo-link:hover {
+            background-color: var(--color-primary);
+            opacity: 0.9;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--light-card-bg);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        body[data-theme="dark"] .modal-content {
+            background-color: var(--dark-card-bg);
+            color: var(--dark-text);
+        }
+
+        /* Access code prompt */
+        .access-code-prompt {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1003;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .access-code-content {
+            background-color: var(--light-card-bg);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        body[data-theme="dark"] .access-code-content {
+            background-color: var(--dark-card-bg);
+            color: var(--dark-text);
+        }
+
+        /* Form elements */
+        input, textarea {
+            background-color: var(--light-bg);
+            border: 1px solid var(--light-border);
+            color: var(--light-text);
+            transition: all var(--transition-fast);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+        }
+
+        body[data-theme="dark"] input,
+        body[data-theme="dark"] textarea {
+            background-color: var(--dark-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.2);
+        }
+
+        /* Buttons */
+        button {
+            transition: all var(--transition-fast);
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Chat Button */
+        .chat-btn {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chat-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .content {
+                padding: var(--spacing-md);
+                margin-left: 0;
+            }
+            
+            .sidebar-toggle {
+                top: 1rem;
+                left: 1rem;
+            }
+            
+            .chat-btn {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.7rem 1.2rem;
+            }
+            
+            .modal-content, .access-code-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .sidebar--collapsed {
+                margin-left: -250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- RGB Strip Animation -->
+    <div class="rgb-strip"></div>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Layout -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__header">
+                <h1 class="sidebar__logo">GS</h1>
+            </div>
+            <nav class="sidebar__nav">
+                <ul class="sidebar__menu">
+                    <li class="sidebar__item">
+                        <a href="{% url 'home' %}" class="sidebar__link">
+                            <i class="fas fa-home sidebar__icon"></i>
+                            <span class="sidebar__text">Home</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="{% url 'about' %}" class="sidebar__link">
+                            <i class="fas fa-user sidebar__icon"></i>
+                            <span class="sidebar__text">About</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="{% url 'tech' %}" class="sidebar__link">
+                            <i class="fas fa-code sidebar__icon"></i>
+                            <span class="sidebar__text">Tech Stack</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item sidebar__item--active">
+                        <a href="#" class="sidebar__link">
+                            <i class="fas fa-project-diagram sidebar__icon"></i>
+                            <span class="sidebar__text">Projects</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="{% url 'certificates' %}" class="sidebar__link">
+                            <i class="fas fa-certificate sidebar__icon"></i>
+                            <span class="sidebar__text">Certificates</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="{% url 'blog'%}" class="sidebar__link">
+                            <i class="fas fa-blog sidebar__icon"></i>
+                            <span class="sidebar__text">Blogs & Notions</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a href="{% url 'contact' %}" class="sidebar__link">
+                            <i class="fas fa-envelope sidebar__icon"></i>
+                            <span class="sidebar__text">Contacts</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar__footer">
+                <div class="theme-switcher">
+                    <button class="theme-switcher__btn" data-theme="light">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button class="theme-switcher__btn" data-theme="dark">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+                <div class="color-palette">
+                    <button class="color-palette__swatch color-palette__swatch--red" data-color="red"></button>
+                    <button class="color-palette__swatch color-palette__swatch--orange" data-color="orange"></button>
+                    <button class="color-palette__swatch color-palette__swatch--blue" data-color="blue"></button>
+                    <button class="color-palette__swatch color-palette__swatch--green" data-color="green"></button>
+                    <button class="color-palette__swatch color-palette__swatch--purple" data-color="purple"></button>
+                    <button class="color-palette__swatch color-palette__swatch--cyan" data-color="cyan"></button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content" id="mainContent">
+            <div class="content__inner">
+                <div class="container mx-auto px-4 py-8">
+                    <h1 class="text-4xl font-bold mb-8 text-center">My Projects</h1>
+                    
+                    <!-- Add Project Button -->
+                    <div class="text-center mb-8">
+                        <button id="addProjectBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+                            <i class="fas fa-plus mr-2"></i> Add Project
+                        </button>
+                    </div>
+                    
+                    <!-- Projects Grid -->
+                    <div id="projectsGrid" class="projects-grid">
+                        <!-- Projects will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Project Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4">Add New Project</h2>
+            <form id="projectForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2" for="projectTitle">Project Title</label>
+                    <input type="text" id="projectTitle" class="w-full px-3 py-2 border rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2" for="githubLink">GitHub Link</label>
+                    <input type="url" id="githubLink" class="w-full px-3 py-2 border rounded-md">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2" for="liveLink">Live Link</label>
+                    <input type="url" id="liveLink" class="w-full px-3 py-2 border rounded-md">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2" for="projectDescription">Description</label>
+                    <textarea id="projectDescription" rows="4" class="w-full px-3 py-2 border rounded-md"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2" for="projectImage">Project Image</label>
+                    <input type="file" id="projectImage" accept="image/*" class="w-full px-3 py-2 border rounded-md">
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="cancelProject" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Access Code Prompt -->
+    <div id="accessCodePrompt" class="access-code-prompt">
+        <div class="access-code-content">
+            <h2 class="text-xl font-bold mb-4">Enter Access Code</h2>
+            <input type="password" id="accessCodeInput" class="w-full px-3 py-2 border rounded-md mb-4" placeholder="Enter access code">
+            <div class="flex justify-end gap-2">
+                <button type="button" id="cancelAccessCode" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400">Cancel</button>
+                <button type="button" id="submitAccessCode" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Button -->
+    <button class="chat-btn">
+        <i class="fas fa-comment-dots chat-btn__icon"></i>
+        <span class="chat-btn__text">Chat with me</span>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const body = document.body;
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const mainContent = document.getElementById('mainContent');
+            const themeButtons = document.querySelectorAll('.theme-switcher__btn');
+            const colorSwatches = document.querySelectorAll('.color-palette__swatch');
+            const chatBtn = document.querySelector('.chat-btn');
+            
+            // Project related elements
+            const addProjectBtn = document.getElementById('addProjectBtn');
+            const projectModal = document.getElementById('projectModal');
+            const projectForm = document.getElementById('projectForm');
+            const cancelProject = document.getElementById('cancelProject');
+            const projectsGrid = document.getElementById('projectsGrid');
+            const accessCodePrompt = document.getElementById('accessCodePrompt');
+            const accessCodeInput = document.getElementById('accessCodeInput');
+            const submitAccessCode = document.getElementById('submitAccessCode');
+            const cancelAccessCode = document.getElementById('cancelAccessCode');
+
+            // Correct access code (using atob)
+            const correctAccessCode = atob("Z3Nwb3J0Zm9saW8="); 
+            
+            // Current action (add or remove)
+            let currentAction = null;
+            let projectToRemove = null;
+
+            // Load saved preferences
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const savedColor = localStorage.getItem('color') || 'blue';
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+            // Apply saved preferences
+            body.setAttribute('data-theme', savedTheme);
+            body.setAttribute('data-color', savedColor);
+            
+            if (sidebarCollapsed) {
+                sidebar.classList.add('sidebar--collapsed');
+                mainContent.style.marginLeft = '0';
+            }
+
+            // Highlight active theme button
+            document.querySelector(`.theme-switcher__btn[data-theme="${savedTheme}"]`).classList.add('active');
+
+            // Highlight active color swatch
+            document.querySelector(`.color-palette__swatch[data-color="${savedColor}"]`).classList.add('active');
+
+            // Update primary color based on saved color
+            updatePrimaryColor(savedColor);
+
+            // Sidebar toggle functionality
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('sidebar--collapsed');
+                const isCollapsed = sidebar.classList.contains('sidebar--collapsed');
+                mainContent.style.marginLeft = isCollapsed ? '0' : '280px';
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
+                
+                // Smooth transition for sidebar toggle
+                if (isCollapsed) {
+                    sidebar.style.boxShadow = 'none';
+                } else {
+                    setTimeout(() => {
+                        sidebar.style.boxShadow = '2px 0 10px rgba(0, 0, 0, 0.1)';
+                    }, 300);
+                }
+            });
+
+            // Theme switcher event listeners
+            themeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    body.setAttribute('data-theme', theme);
+                    localStorage.setItem('theme', theme);
+
+                    // Update active button
+                    themeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Trigger RGB animation
+                    triggerRGBEffect();
+                });
+            });
+
+            // Color switcher event listeners
+            colorSwatches.forEach(swatch => {
+                swatch.addEventListener('click', function() {
+                    const color = this.getAttribute('data-color');
+                    body.setAttribute('data-color', color);
+                    localStorage.setItem('color', color);
+                    updatePrimaryColor(color);
+
+                    // Update active swatch
+                    colorSwatches.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Trigger RGB animation
+                    triggerRGBEffect();
+                });
+            });
+
+            // Function to update primary color
+            function updatePrimaryColor(color) {
+                let primaryColor;
+                switch(color) {
+                    case 'red':
+                        primaryColor = 'var(--color-primary-red)';
+                        break;
+                    case 'orange':
+                        primaryColor = 'var(--color-primary-orange)';
+                        break;
+                    case 'blue':
+                        primaryColor = 'var(--color-primary-blue)';
+                        break;
+                    case 'green':
+                        primaryColor = 'var(--color-primary-green)';
+                        break;
+                    case 'purple':
+                        primaryColor = 'var(--color-primary-purple)';
+                        break;
+                    case 'cyan':
+                        primaryColor = 'var(--color-primary-cyan)';
+                        break;
+                    default:
+                        primaryColor = 'var(--color-primary-blue)';
+                }
+                
+                // Update CSS variable
+                document.documentElement.style.setProperty('--color-primary', primaryColor);
+                
+                // Update sidebar logo gradient
+                const sidebarLogo = document.querySelector('.sidebar__logo');
+                if (sidebarLogo) {
+                    sidebarLogo.style.background = `linear-gradient(135deg, ${primaryColor}, var(--color-primary-purple))`;
+                }
+            }
+
+            // Chat button functionality
+            chatBtn.addEventListener('click', function() {
+                // Add animation to chat button
+                this.classList.add('rgb-animate');
+                setTimeout(() => {
+                    this.classList.remove('rgb-animate');
+                    alert('Chat functionality will be implemented soon!');
+                }, 500);
+            });
+
+            // Function to trigger RGB effect
+            function triggerRGBEffect() {
+                // Add animation to profile border
+                const profileBorder = document.querySelector('.profile-border');
+                if (profileBorder) {
+                    profileBorder.style.animation = 'none';
+                    void profileBorder.offsetWidth; // Trigger reflow
+                    profileBorder.style.animation = `rgbAnimation ${getComputedStyle(document.documentElement).getPropertyValue('--rgb-animation-duration')} linear infinite`;
+                }
+                
+                // Add pulse effect to elements
+                const highlightElements = document.querySelectorAll('.highlight');
+                highlightElements.forEach(el => {
+                    el.classList.add('rgb-animate');
+                    setTimeout(() => {
+                        el.classList.remove('rgb-animate');
+                    }, 500);
+                });
+            }
+            
+            // Add smooth page transitions
+            document.querySelectorAll('.sidebar__link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't prevent default behavior for external links
+                    if (this.getAttribute('href') === '#' || this.getAttribute('href').startsWith('http')) {
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    
+                    // Add fade-out animation to content
+                    mainContent.style.opacity = '0';
+                    mainContent.style.transition = 'opacity 0.3s ease';
+                    
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            });
+            
+            // Add fade-in animation when page loads
+            setTimeout(() => {
+                mainContent.style.opacity = '1';
+                mainContent.style.transition = 'opacity 0.5s ease';
+            }, 100);
+
+            // Project Management Functions
+            function loadProjects() {
+                const projects = JSON.parse(localStorage.getItem('projects')) || [];
+                projectsGrid.innerHTML = '';
+                
+                projects.forEach((project, index) => {
+                    const projectCard = document.createElement('div');
+                    projectCard.className = 'project-card';
+                    projectCard.innerHTML = `
+                        <div class="relative overflow-hidden">
+                            <img src="${project.imageUrl || 'https://via.placeholder.com/400x200?text=Project+Image'}" 
+                                 alt="${project.title}" 
+                                 class="project-image">
+                            <button class="remove-project" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">${project.title}</h3>
+                            <p class="project-description">${project.description || 'No description provided.'}</p>
+                            <div class="project-links">
+                                ${project.githubLink ? `<a href="${project.githubLink}" target="_blank" class="project-link github-link">
+                                    <i class="fab fa-github mr-2"></i> GitHub
+                                </a>` : ''}
+                                ${project.liveLink ? `<a href="${project.liveLink}" target="_blank" class="project-link demo-link">
+                                    <i class="fas fa-external-link-alt mr-2"></i> Live Demo
+                                </a>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    projectsGrid.appendChild(projectCard);
+                });
+
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-project').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        projectToRemove = parseInt(this.getAttribute('data-index'));
+                        currentAction = 'remove';
+                        showAccessCodePrompt();
+                    });
+                });
+            }
+
+            // Show add project modal
+            addProjectBtn.addEventListener('click', function() {
+                currentAction = 'add';
+                showAccessCodePrompt();
+            });
+
+            // Show access code prompt
+            function showAccessCodePrompt() {
+                accessCodePrompt.style.display = 'flex';
+                accessCodeInput.focus();
+            }
+
+            // Hide access code prompt
+            function hideAccessCodePrompt() {
+                accessCodePrompt.style.display = 'none';
+                accessCodeInput.value = '';
+            }
+
+            // Submit access code
+            submitAccessCode.addEventListener('click', function() {
+                const enteredCode = accessCodeInput.value.trim();
+                if (enteredCode === correctAccessCode) {
+                    hideAccessCodePrompt();
+                    
+                    if (currentAction === 'add') {
+                        projectForm.reset();
+                        projectModal.style.display = 'flex';
+                    } else if (currentAction === 'remove') {
+                        removeProject();
+                    }
+                } else {
+                    alert('Incorrect access code. Please try again.');
+                    accessCodeInput.value = '';
+                    accessCodeInput.focus();
+                }
+            });
+
+            // Cancel access code prompt
+            cancelAccessCode.addEventListener('click', function() {
+                hideAccessCodePrompt();
+                currentAction = null;
+                projectToRemove = null;
+            });
+
+            // Remove project function
+            function removeProject() {
+                if (projectToRemove !== null) {
+                    const projects = JSON.parse(localStorage.getItem('projects')) || [];
+                    projects.splice(projectToRemove, 1);
+                    localStorage.setItem('projects', JSON.stringify(projects));
+                    loadProjects();
+                    
+                    // Show success message
+                    alert('Project removed successfully!');
+                    
+                    // Reset variables
+                    currentAction = null;
+                    projectToRemove = null;
+                }
+            }
+
+            // Cancel project modal
+            cancelProject.addEventListener('click', function() {
+                projectModal.style.display = 'none';
+            });
+
+            // Submit project form
+            projectForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('projectTitle').value.trim();
+                const githubLink = document.getElementById('githubLink').value.trim();
+                const liveLink = document.getElementById('liveLink').value.trim();
+                const description = document.getElementById('projectDescription').value.trim();
+                const imageFile = document.getElementById('projectImage').files[0];
+                
+                if (!title) {
+                    alert('Project title is required!');
+                    return;
+                }
+                
+                // Create project object
+                const project = {
+                    title,
+                    githubLink: githubLink || null,
+                    liveLink: liveLink || null,
+                    description: description || null,
+                    imageUrl: null
+                };
+                
+                // Handle image upload
+                if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        project.imageUrl = e.target.result;
+                        saveProject(project);
+                    };
+                    reader.readAsDataURL(imageFile);
+                } else {
+                    saveProject(project);
+                }
+            });
+
+            // Save project to local storage
+            function saveProject(project) {
+                const projects = JSON.parse(localStorage.getItem('projects')) || [];
+                projects.push(project);
+                localStorage.setItem('projects', JSON.stringify(projects));
+                
+                // Close modal and reload projects
+                projectModal.style.display = 'none';
+                loadProjects();
+                
+                // Show success message
+                alert('Project added successfully!');
+            }
+
+            // Close modals when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === projectModal) {
+                    projectModal.style.display = 'none';
+                }
+                if (e.target === accessCodePrompt) {
+                    hideAccessCodePrompt();
+                }
+            });
+
+            // Load projects on page load
+            loadProjects();
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Toggle sidebar with Ctrl+B
+                if (e.ctrlKey && e.key === 'b') {
+                    e.preventDefault();
+                    sidebarToggle.click();
+                }
+                
+                // Toggle theme with Ctrl+T
+                if (e.ctrlKey && e.key === 't') {
+                    e.preventDefault();
+                    const currentTheme = body.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    body.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    
+                    // Update active button
+                    themeButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector(`.theme-switcher__btn[data-theme="${newTheme}"]`).classList.add('active');
+                }
+                
+                // Escape key closes modals
+                if (e.key === 'Escape') {
+                    if (projectModal.style.display === 'flex') {
+                        projectModal.style.display = 'none';
+                    }
+                    if (accessCodePrompt.style.display === 'flex') {
+                        hideAccessCodePrompt();
+                    }
+                }
+            });
+
+            // Initialize tooltips
+            function initTooltips() {
+                const tooltipElements = document.querySelectorAll('[data-tooltip]');
+                
+                tooltipElements.forEach(el => {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = el.getAttribute('data-tooltip');
+                    document.body.appendChild(tooltip);
+                    
+                    el.addEventListener('mouseenter', function(e) {
+                        const rect = el.getBoundingClientRect();
+                        tooltip.style.left = `${rect.left + rect.width/2 - tooltip.offsetWidth/2}px`;
+                        tooltip.style.top = `${rect.top - tooltip.offsetHeight - 10}px`;
+                        tooltip.style.opacity = '1';
+                    });
+                    
+                    el.addEventListener('mouseleave', function() {
+                        tooltip.style.opacity = '0';
+                    });
+                });
+            }
+
+            // Initialize animations
+            function initAnimations() {
+                const animateOnScroll = function() {
+                    const elements = document.querySelectorAll('.animate-on-scroll');
+                    
+                    elements.forEach(el => {
+                        const elementPosition = el.getBoundingClientRect().top;
+                        const windowHeight = window.innerHeight;
+                        
+                        if (elementPosition < windowHeight - 100) {
+                            el.classList.add('animated');
+                        }
+                    });
+                };
+                
+                window.addEventListener('scroll', animateOnScroll);
+                animateOnScroll(); // Run once on page load
+            }
+
+            // Call initialization functions
+            initTooltips();
+            initAnimations();
+        });
+    </script>
+</body>
+</html>
