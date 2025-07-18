@@ -36,5 +36,3 @@ Welcome to my **developer portfolio** — a fully responsive and dynamic website
 
 ---
 
-## 📂 Folder Structure (Optional)
-
