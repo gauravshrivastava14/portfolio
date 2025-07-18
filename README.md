@@ -21,8 +21,8 @@ Welcome to my **developer portfolio** — a fully responsive and dynamic website
 
 ## 📸 Screenshots
 
-![Portfolio Home](https://your-image-link.com/home.png)
-![Portfolio Contact](https://your-image-link.com/contact.png)
+![Portfolio Home](https://github.com/gauravshrivastava14/portfolio/issues/1#issue-3242799355)
+![Portfolio Contact](https://github.com/gauravshrivastava14/portfolio/issues/1#issue-3242799355)
 
 ---
 
