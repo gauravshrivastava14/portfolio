@@ -11,6 +11,7 @@ import Footer from './components/Footer'
 import ParticleCanvas from './components/ParticleCanvas'
 import CustomCursor from './components/CustomCursor'
 import TechMarquee from './components/TechMarquee'
+import ChatBot from './components/ChatBot'
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll()
@@ -101,6 +102,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <ChatBot />
     </div>
   )
 }
