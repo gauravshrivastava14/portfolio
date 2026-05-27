@@ -34,9 +34,7 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-[11px] text-white/22 font-mono">
-              © 2025 · Built with React + Tailwind
-            </span>
+            <span className="text-[11px] text-white/22 font-mono">            </span>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="w-8 h-8 rounded-lg border border-white/8 flex items-center justify-center text-white/35 hover:text-primary hover:border-primary/35 hover:bg-primary/5 transition-all duration-300"
